@@ -2,6 +2,9 @@
     @section('content')
       
                   @if(Auth::user()->profil == 'admin')
+                    <div class="alert alert-primary d-flex justify-content-start" style="size:20px !important;">
+                        <h4 class="mr-3" >Etat du jour : </h4><h4 id="date_jour" class="" style="margin-left:10px;"></h4>
+                    </div>
                     <div class="row">
                       <div class="col-lg-7 mb-4 order-0">
                         <div class="card">
@@ -36,8 +39,8 @@
                                               </div>
                                             </div>
                                           </div>
-                                          <h6 class="fw-medium d-block mb-1">{{$consultation->nom}}</h6>
-                                          <h4 class="card-title mb-2">{{$consultation->prix}} FCFA</h4>
+                                          <h6 class="fw-medium d-block mb-1">{{$consultation->nom_consultation}}</h6>
+                                          <h4 class="card-title mb-2">{{$consultation->prix_consultation}} FCFA</h4>
                                         </div>
                                       </div>
                                     </div>
@@ -223,4 +226,10 @@
                       </div>
                   @endif
     
+
+                  <script>
+                      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                      var today  = new Date();
+                      document.getElementById('date_jour').innerText = today.toLocaleDateString("fr-FR", options);
+                  </script>
     @endsection

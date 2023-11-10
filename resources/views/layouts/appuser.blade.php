@@ -37,12 +37,12 @@
      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
    />
 </head>
-<body>
+<body class="overflow-hidden">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <aside id="layout-menu" class="overflow-auto layout-menu menu-vertical menu bg-menu-theme">
                 <nav class="navbar navbar-light ">
                     <div class="container-fluid pt-3 pb-3">
                         <a class="navbar-brand" href="#">
@@ -52,81 +52,60 @@
                 </nav>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    <!-- Dashboards -->
-                    <li class="menu-item active open">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Dashboards">Tableau de bord</div>
-                            <div class="badge bg-danger rounded-pill ms-auto"></div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                            <a
-                                href="{{route('user_space')}}"
-                                class="menu-link">
-                                <div data-i18n="CRM">Accueil</div>
-                            </a>
-                            </li>
-                            
-                        </ul>
-                    </li>
+                    
                     @if(Auth::user()->profil=='admin')
-                        <!-- Layouts -->
-                        <li class="menu-item">
+                        <!-- Dashboards -->
+                        <li class="menu-item active open">
                             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <i class=" fa-solid fa-stethoscope menu-icon tf-icons"></i>
-                                <div data-i18n="Layouts">Consultations</div>
-                            </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                <a href="{{route('list_type_consultation')}}" class="menu-link">
-                                    <div data-i18n="Without menu">Types consultations</div>
-                                </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <!-- Front Pages -->
-                        <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <i class="menu-icon tf-icons fa-solid fa-cash-register"></i>
-                                <div data-i18n="Front Pages">Point de vente</div>
-                                
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                                <div data-i18n="Dashboards">Tableau de bord</div>
+                                <div class="badge bg-danger rounded-pill ms-auto"></div>
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
                                 <a
-                                    href="{{route('list_point_de_ventes')}}"
+                                    href="{{route('user_space')}}"
                                     class="menu-link">
-                                    <div data-i18n="Landing">Liste point de vente</div>
+                                    <div data-i18n="CRM" class="text-bold" style="font-weight: bold;">Accueil</div>
                                 </a>
                                 </li>
+                                
                             </ul>
+                        </li>
+                        <!-- Layouts -->
+                        <li class="menu-item">
+                            <a href="{{route('list_type_consultation')}}" class="menu-link">
+                                <i class=" fa-solid fa-stethoscope menu-icon tf-icons"></i>
+                                <div data-i18n="Layouts" class="text-bold" style="font-weight: bold;">Consultations</div>
+                            </a>
+                        </li>
+
+                        <!-- Front Pages -->
+                        <li class="menu-item">
+                            <a href="{{route('list_point_de_ventes')}}" class="menu-link">
+                                <i class="menu-icon tf-icons fa-solid fa-cash-register"></i>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Point de vente</div>
+                                
+                            </a>
                         </li>
                         <li class="menu-item">
                             <a href="{{route('get_all_tickets')}}" class="menu-link ">
                                 <i class="menu-icon tf-icons fa-solid fa-ticket"></i>
-                                <div data-i18n="Front Pages">Tickets</div>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Tickets</div>
                                 
                             </a>
-                            <ul class="menu-sub">
-                                
-                            </ul>
                         </li>
                         <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <a href="javascript:void(0);" class="menu-link">
                                 <i class="menu-icon tf-icons fa-solid fa-hand-holding-dollar"></i>
-                                <div data-i18n="Front Pages">Facturation</div>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Facturation</div>
                                 
                             </a>
-                            <ul class="menu-sub">
-                                
-                            </ul>
                         </li>
                         <li class="menu-item">
                             <a href="{{route('get_ipms')}}" class="menu-link ">
                                 <i class="menu-icon tf-icons fa-solid fa-file-invoice-dollar"></i>
-                                <div data-i18n="Front Pages">IPM</div>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">IPM</div>
                                 
                             </a>
                             <ul class="menu-sub">
@@ -137,7 +116,7 @@
                         <li class="menu-item">
                             <a href="{{route('get_all_encaissement')}}" class="menu-link ">
                                 <i class="menu-icon tf-icons fa-solid fa-dollar"></i>
-                                <div data-i18n="Front Pages">Encaissement</div>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Encaissement</div>
                                 
                             </a>
                             <ul class="menu-sub">
@@ -145,76 +124,45 @@
                             </ul>
                         </li>
 
-                        <li class="menu-header small text-uppercase">
-                            <span class="menu-header-text">Parametres</span>
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <i class="menu-icon tf-icons fa-solid fa-person-breastfeeding"></i>
-                                <div data-i18n="Front Pages">Gestion clients</div>
-                                
-                            </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                <a
-                                    href="{{route('list_clients')}}"
-                                    class="menu-link">
-                                    <div data-i18n="Landing">Clients</div>
-                                </a>
-                                </li>
-                                
-                            </ul>
-                        </li>
+                        
                     @endif
                     @if(Auth::user()->profil=='caissier')
                         <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <a href="{{route('my_caisse')}}" class="menu-link">
                                 <i class="menu-icon tf-icons fa-solid fa-cash-register"></i>
-                                <div data-i18n="Front Pages">Point de vente</div>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Point de vente</div>
                                 
                             </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                <a
-                                    href="{{route('my_caisse')}}"
-                                    class="menu-link">
-                                    <div data-i18n="Landing">Caisse</div>
-                                </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{route('list_all_tickets')}}" class="menu-link ">
+                                <i class="menu-icon tf-icons fa-solid fa-ticket"></i>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Tickets</div>
+                                
+                            </a>
                         </li>
                     @endif
                     <!-- Apps -->
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons fa-solid fa-gears"></i>
-                            <div data-i18n="Front Pages">Parametres</div>
+                            <div data-i18n="Front Pages" style="font-weight: bold;">Parametres</div>
                             
                         </a>
                         <ul class="menu-sub">
-                            @if(Auth::user()->profil=='admin')
+                            
                             <li class="menu-item">
-                                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                    <i class="menu-icon tf-icons fa-solid fa-person-breastfeeding"></i>
-                                    <div data-i18n="Front Pages">Gestion clients</div>
-                                    
-                                </a>
-                                <ul class="menu-sub">
-                                    <li class="menu-item">
                                     <a
                                         href="{{route('list_clients')}}"
                                         class="menu-link">
                                         <div data-i18n="Landing">Clients</div>
                                     </a>
-                                    </li>
-                                    
-                                </ul>
                             </li>
+                            @if(Auth::user()->profil=='admin')
                                 <li class="menu-item">
                                     <a
                                         href="{{route('list_users')}}"
                                         class="menu-link">
-                                        <i class="menu-icon tf-icons fa-solid fa-user-group"></i>
                                         <div data-i18n="Landing">Utilisateurs</div>
                                     </a>
                                 </li>
@@ -223,7 +171,6 @@
                                 <a
                                     href="{{route('my_account')}}"
                                     class="menu-link">
-                                    <i class="menu-icon tf-icons fa-solid fa-user"></i>
                                     <div data-i18n="Landing">Mon compte</div>
                                 </a>
                             </li>
@@ -234,7 +181,7 @@
             </aside>
                 <!-- / Menu -->
             <!-- Layout container -->
-            <div class="layout-page">
+            <div class="layout-page ">
                 <!-- Navbar -->
 
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
@@ -245,86 +192,76 @@
                     </div>
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                    <!-- Search -->
-                    <div class="navbar-nav align-items-center">
-                        <div class="nav-item d-flex align-items-center">
-                        <i class="bx bx-search fs-4 lh-0"></i>
-                        <input
-                            type="text"
-                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                            placeholder="Search..."
-                            aria-label="Search..." />
-                        </div>
-                    </div>
-                    <!-- /Search -->
-
-                    <ul class="navbar-nav flex-row align-items-center ms-auto">
-                        <!-- Place this tag where you want the button to render. -->
-                        
-                        <!-- User -->
-                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <div class="avatar avatar-online">
-                                <img src="{{asset('assets/img/avatars/user-avatar.png')}}" alt class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                            <a class="dropdown-item" href="#">
-                                <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar avatar-online">
-                                    <img src="{{asset('assets/img/avatars/user-avatar.png')}}" alt class="w-px-40 h-auto rounded-circle" />
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="fw-medium d-block">{{Auth::user()->prenom}} {{Auth::user()->nom}}</span>
-                                    <small class="text-muted">{{Auth::user()->profil}}</small>
-                                </div>
-                                </div>
-                            </a>
-                            </li>
-                            <li>
-                            <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                            <a class="dropdown-item" href="{{route('my_account')}}">
-                                <i class="bx bx-user me-2"></i>
-                                <span class="align-middle">Mon Profil</span>
-                            </a>
-                            </li>
-                            <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Parametres</span>
-                            </a>
-                            </li>
+                    
+                    <marquee behavior="alternate" direction=""><h4>CABINET MEDICAL PEDIATRIQUE - LE PEDIATRE DU SOIR</h4></marquee>
+                   
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <!-- Place this tag where you want the button to render. -->
                             
-                            <li>
-                            <div class="dropdown-divider"></div>
+                            <!-- User -->
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    <img src="{{asset('assets/img/avatars/user-avatar.png')}}" alt class="w-px-40 h-auto rounded-circle" />
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                <a class="dropdown-item" href="#">
+                                    <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar avatar-online">
+                                            <img src="{{asset('assets/img/avatars/user-avatar.png')}}" alt class="w-px-40 h-auto rounded-circle" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-medium d-block">{{Auth::user()->prenom}} {{Auth::user()->nom}}</span>
+                                        <small class="text-muted">{{Auth::user()->profil}}</small>
+                                    </div>
+                                    </div>
+                                </a>
+                                </li>
+                                <li>
+                                <div class="dropdown-divider"></div>
+                                </li>
+                                <li>
+                                <a class="dropdown-item" href="{{route('my_account')}}">
+                                    <i class="bx bx-user me-2"></i>
+                                    <span class="align-middle">Mon Profil</span>
+                                </a>
+                                </li>
+                                <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bx bx-cog me-2"></i>
+                                    <span class="align-middle">Parametres</span>
+                                </a>
+                                </li>
+                                
+                                <li>
+                                <div class="dropdown-divider"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                                        <i class="bx bx-power-off me-2"></i>
+                                        <span class="align-middle">Déconnecxion</span>
+                                    </a>    
+                                    <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                                    <i class="bx bx-power-off me-2"></i>
-                                    <span class="align-middle">Déconnecxion</span>
-                                </a>    
-                                <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
+                            <!--/ User -->
                         </ul>
-                        </li>
-                        <!--/ User -->
-                    </ul>
                     </div>
                 </nav>
                 <!-- / Navbar -->
 
-                <main class="pt-2">
+                <main class="pt-2 ">
                     <!-- Content wrapper -->
-                    <div class="content-wrapper" style="paddind:0px !important;">
+                    <div class="content-wrapper" style="paddind:0px !important; margin:0px !important;">
                         <!-- Content -->
-                        <div class="container-xxl flex-grow-1 container-p-y" style="paddind:0px !important;">
+                        <div class="container-xxl flex-grow-1 container-p-y " style="paddind:0px !important; overflow: scroll !important; height: 90vh !important;">
                             @yield('content')
                         </div>
                     </div>
@@ -336,6 +273,7 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->

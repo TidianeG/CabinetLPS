@@ -128,7 +128,6 @@
                                                 <option value=""></option>
                                                 <option value="caissier">Caissier</option>
                                                 <option value="medecin">Medecin</option>
-                                                <option value="admin">Admin</option>
                                             </select>
                                         </div>
                                     </div>

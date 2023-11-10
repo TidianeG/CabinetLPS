@@ -16,7 +16,6 @@ use App\Http\Middleware\Caissier;
 |
 */
 
-Auth::routes();
 
 Route::middleware(Admin::class)->group(function () {
     Route::get('/list_clients', [App\Http\Controllers\ClientController::class, 'getClients'])->name('list_clients');
@@ -34,14 +33,14 @@ Route::middleware(Admin::class)->group(function () {
     Route::post('/get-ipms/register-ipm', [App\Http\Controllers\IpmController::class, 'registerIPM'])->name('register_ipm');
     Route::post('/get-ipms/register-ipm-consultation', [App\Http\Controllers\IpmController::class, 'registerIPMConsultation'])->name('register_ipm_consultation');
 
-
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'home_user'])->name('user_space');
     Route::get('/get-all-encaissements', [App\Http\Controllers\EncaissementController::class, 'getAllEncaissement'])->name('get_all_encaissement');
     Route::get('/tickets/get-all-tickets', [App\Http\Controllers\TicketController::class, 'getAllTickets'])->name('get_all_tickets');
 });
 
 Route::middleware(Caissier::class)->group(function () {
-    Route::get('/point_de_vente/my_caisse', [App\Http\Controllers\PointVenteController::class, 'myCaisse'])->name('my_caisse');    
-
+    
+    Route::get('/point_de_vente/my_caisse', [App\Http\Controllers\PointVenteController::class, 'myCaisse'])->name('my_caisse'); 
     Route::post('/point_de_vente/my_caisse/ticket/create-ticket', [App\Http\Controllers\TicketController::class, 'createTicket'])->name('create_ticket');     
     Route::get('/point_de_vente/my_caisse/espace_caisse', [App\Http\Controllers\PointVenteController::class, 'espaceCaisse'])->name('espace_caisse');
 
@@ -54,7 +53,10 @@ Route::middleware(Caissier::class)->group(function () {
     Route::post('/point_de_vente/my_caisse/espace_caisse/register_encaissement', [App\Http\Controllers\EncaissementController::class, 'newEncaissement'])->name('register_encaissement_new');
 });
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'home_user'])->name('user_space');
 
 
+   
 Route::get('/my_account', [App\Http\Controllers\HomeController::class, 'getAccount'])->name('my_account');
+
+
+Auth::routes();

@@ -26,12 +26,7 @@
                             <a href="{{route('list_all_tickets')}}" class="btn btn-primary"><i class="fa-solid fa-table-list fa-lg text-white me-3"></i>Tous les tickets</a>
                         </div>
                         <div class="m-2">
-                            <form action="{{route('register_encaissement_new')}}" method="POST">
-                                @csrf
-                                <input type="hidden" name="nombre_ticket" value="{{$nombre_ticket}}">
-                                <input type="hidden" name="montant_total" value="{{$somme_total}}">
-                                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-circle-xmark fa-lg text-white me-3"></i>Cloturer</button>
-                            </form>
+                        <a href="#" data-toggle="modal" data-target="#cloture_caisse" class="btn btn-primary"><i class="fa-solid fa-table-list fa-lg text-white me-3"></i>Tous les tickets</a>
                             
                         </div>
                     </div>
@@ -253,6 +248,28 @@
                             </div>
                         </div>
                     </div>
+                    
+                
+        <div class="modal fade modal-lg" id="cloture_caisse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    
+                    <div class="modal-body" style="">
+                        <div class="container">
+                            <h6>Voulez-vous cloturer la caisse ?</h6>
+                        </div>
+                        <form action="{{route('register_encaissement_new')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="nombre_ticket" value="{{$nombre_ticket}}">
+                            <input type="hidden" name="montant_total" value="{{$somme_total}}">
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-circle-xmark fa-lg text-white me-3"></i>Cloturer</button>
+                        </form>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+                
                 <script>
             // Selection du button autre client
                 document.getElementById("check_new_client").addEventListener('click',function() {
