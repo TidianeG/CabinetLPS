@@ -33,17 +33,24 @@ class IpmController extends Controller
             'nom_ipm' => 'required|string|max:255',
         ]);
 
-        $ipm = new IPM();
-        $ipm->nom_ipm = $validated['nom_ipm'];
-        $ipm->save();
-        if (empty($ipm)) {
-             
-            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
-       }
-       else {
-            
-           return redirect()->back()->with(['success' => "IPM ajouté avec succès"]);
-      }
+        $ipm_exist = IPM::where('nom_ipm', $validated['nom_ipm'])->first();
+        if ($ipm_exist) {
+            return redirect()->back()->with(['error' => "IPM déja ajouté !!!"]);
+        } 
+        else 
+        {
+            $ipm = new IPM();
+            $ipm->nom_ipm = $validated['nom_ipm'];
+            $ipm->save();
+            if (empty($ipm)) {
+                
+                return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+            }
+            else {
+                
+            return redirect()->back()->with(['success' => "IPM ajouté avec succès"]);
+            }
+        }
     }
 
     public function registerIPMConsultation(Request $request){
@@ -53,18 +60,22 @@ class IpmController extends Controller
             'select_ipm' => 'required|numeric',
         ]);
 
-        $consultation_ipm = new ConsultationIPM();
-        $consultation_ipm->prix_consultation_ipm = $validated['prix_ipm_consultation'];
-        $consultation_ipm->consultation_id = $validated['select_consultation'];
-        $consultation_ipm->i_p_m_id = $validated['select_ipm'];
-        $consultation_ipm->save();
-        if (empty($consultation_ipm)) {
-             
-            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
-       }
-       else {
-            
-           return redirect()->back()->with(['success' => "Prix ajouté avec succès pour la consultation"]);
-      }
+        $consultation_ipm_exist = ConsultationIPM::where('consultation_id', $validated['select_consultation']);
+        if ($consultation_ipm_exist) {
+            return redirect()->back()->with(['error' => "Ce prix est déja défini"]);
+        } else {
+            $consultation_ipm = new ConsultationIPM();
+            $consultation_ipm->prix_consultation_ipm = $validated['prix_ipm_consultation'];
+            $consultation_ipm->consultation_id = $validated['select_consultation'];
+            $consultation_ipm->i_p_m_id = $validated['select_ipm'];
+            $consultation_ipm->save();
+            if (empty($consultation_ipm)) {
+                    return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+            }
+            else {
+                    
+                return redirect()->back()->with(['success' => "Prix ajouté avec succès pour la consultation"]);
+            }
+        }
     }
 }

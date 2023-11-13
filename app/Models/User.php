@@ -57,7 +57,7 @@ class User extends Authenticatable
     }
 
     public function point_vente(){
-        return $this->hasMany(PointVente::class);
+        return $this->hasOne(PointVente::class);
     }
 
     public function caisse(){
@@ -66,5 +66,9 @@ class User extends Authenticatable
 
     public function encaissement(){
         return $this->hasMany(Encaissement::class);
+    }
+
+    public function soin(){
+        return $this->hasMany(Soin::class);
     }
 }

@@ -1,6 +1,10 @@
 @extends('layouts.appuser')
     @section('content')
-        
+                    <div class="d-flex justify-content-start">
+                        <h5 class="pb-1 mb-4" style="margin-right: 20px;">Espace de Vente </h5>
+                        <h5 class="pb-1 mb-4 text-primary"><i class="menu-icon tf-icons fa-solid fa-cash-register"></i>{{$point_vente->nom_point_vente}}</h5>
+                                                
+                    </div>
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>{{ session('error') }}</strong> 
@@ -13,9 +17,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                <h4 class=" mb-2"><span class="text-muted fw-light">Espace caisse</h4>
+                
                 <div class="row mb-3">
-                    <div class="col-9 d-flex justify-content-beetwen">
+                    <div class="col-10 d-flex justify-content-beetwen">
                         <div class="m-2" >
                             <a href="{{route('my_caisse')}}" class="btn btn-primary"><i class="fa-solid fa-rotate-left fa-lg text-white me-3"></i>Quitter</a>
                         </div>
@@ -25,17 +29,19 @@
                         <div class="m-2">
                             <a href="{{route('list_all_tickets')}}" class="btn btn-primary"><i class="fa-solid fa-table-list fa-lg text-white me-3"></i>Tous les tickets</a>
                         </div>
-                        <div class="m-2">
-                        <a href="#" data-toggle="modal" data-target="#cloture_caisse" class="btn btn-primary"><i class="fa-solid fa-table-list fa-lg text-white me-3"></i>Tous les tickets</a>
-                            
-                        </div>
+                        @if($nombre_ticket)
+                            <div class="m-2">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#cloture_caisse" class="btn btn-danger"><i class="fa-solid fa-circle-xmark fa-lg text-white me-3"></i>Cloturer</a>
+                                
+                            </div>
+                        @endif
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <div class="d-flex justify-content-end">
-                            <div class="text-center" style="margin-right: 30px; text-size:16px; font-weight: bold;">
+                            <div class="text-center" style="margin-right: 10px; text-size:16px; font-weight: bold;">
                                 <span>Tickets </span><span class="badge bg-success text-center" style="text-size:20px !important; font-weight: bold;">{{$nombre_ticket}}</span>
                             </div>
-                            <div class="text-center" style="margin-right: 30px; text-size:16px; font-weight: bold;">
+                            <div class="text-center" style="margin-right: 10px; text-size:16px; font-weight: bold;">
                                 <span>Total </span><span class="badge bg-success text-center" style="text-size:20px !important; font-weight: bold;">{{$somme_total}} FCFA</span>
                             </div>
                         </div>
@@ -133,6 +139,29 @@
                                         </div>
 
                                     </div>
+                                        <div id="client_soin_add">
+                                            <div class="form-check form-switch mb-2" >
+                                                <input class="form-check-input recap-disable" type="checkbox" name="soin_check" id="soin_check" value="1">
+                                                <label class="form-check-label" for="soin_client_check">Ajouter soin</label>
+                                            </div>
+                                            <div class="mb-3" id="soin_details" hidden>
+                                                <label class="form-label" for="basic-icon-default-fullname">Détails soin</label>
+                                                    <div class="row mb-3">
+                                                        
+                                                        <div class="col input-group input-group-merge mb-3">
+                                                            <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                            ><i class="fa-solid fa-person"></i
+                                                            ></span>
+                                                            <input type="text" name="description_soin"  class="form-control recap-disable" id="description_soin" placeholder="Description" aria-label="" aria-describedby="basic-icon-default-fullname2" />
+                                                        </div>
+                                                        <div class="col input-group input-group-merge mb-3">
+                                                            <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                            ><i class="fa-solid fa-percent"></i></span>
+                                                            <input type="number" name="nombre_soin"  class="form-control" id="nombre_soin" placeholder="Nombre de soin"  aria-describedby="basic-icon-default-fullname2" />
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
                                         <div id="client_new_ip">
                                             <div class="form-check form-switch mb-2" >
                                                 <input class="form-check-input recap-disable" type="checkbox" name="ipm_check" id="ipm_check" value="1">
@@ -164,111 +193,137 @@
                                             </div>
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-primary" id="valider">Valider</button>
+                                        <button type="submit" data-toggle="modal" data-target="#recapitulatif_ticket_modal" class="btn btn-primary" id="valider"><i class="fa-solid fa-circle-check fa-lg text-white me-3"></i>Valider</button>
                                 </form>
                                 
                             </div>
                         </div>
                     </div>
                     <!-- Merged -->
-                    <div class="" id="recapitulatif_ticket" hidden>
-                        <div class="card mb-4">
-                            <h5 class="card-header">Récapitulatif ticket</h5>
-                            <div >
-                                <div class="l-col-right ticket-wrap" aria-label="A fake boat ticket demonstrating mixing font weights and widths">
-                                    <div class="ticket p-1" aria-hidden="true">
-                                        <div class="ticket__header" style="border-bottom:1px dashed #424f5e;">
-                                            <nav class="navbar navbar-light" style="">
-                                                <div class="">
-                                                    <a class="navbar-brand" href="#">
-                                                        <img src="{{asset('assets/img/favicon/logo.png')}}" alt="" width="30%" height="30%" class="d-inline-block align-text-center ">
-                                                    </a>
-                                                    <h6 class="mb-1">Cabinet Medical Peditrique</h6>
-                                                    <h6>Le Pediatre du Soir</h6>
-                                                </div>
-                                            </nav>
-                                            <span class="text-center">Sacré coeur 3, rue XXXXX, villa XXX</span>
-                                            <span class="text-center">33 XXX XX XX</span>
-                                        </div>
-                                        <div class="ticket__body">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <span class="text-left">N° </span>
-                                                </div>
-                                                <div class="col-6">
-                                                    <span id="date_ticket" style="text-align: right;"></span>
+                    
+                    
+                
+                <div class="modal fade" id="cloture_caisse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                
+                                <button type="button" class="btn-close bg-danger text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="">
+                                <div class="text-center">
+                                    <h6>Voulez-vous cloturer la caisse ?</h6>
+                                </div>
+                                <form action="{{route('register_encaissement_new')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="nombre_ticket" value="{{$nombre_ticket}}">
+                                    <input type="hidden" name="montant_total" value="{{$somme_total}}">
+                                    <div class="d-flex justify-content-around">
+                                        <button type="submit" class="btn btn-primary">Oui</button>
+                                        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-secondary">Annuler</button>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="modal fade" id="recapitulatif_ticket_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close bg-danger text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="">
+                                <div class="" id="recapitulatif_ticket" >
+                                    <div class=" mb-4">
+                                        <!--h5 class="card-header">Récapitulatif ticket</h5-->
+                                        <div >
+                                            <div class="l-col-right ticket-wrap" aria-label="A fake boat ticket demonstrating mixing font weights and widths">
+                                                <div class="ticket p-1" aria-hidden="true">
+                                                    <div class="ticket__header" style="border-bottom:1px dashed #424f5e;">
+                                                        <nav class="navbar navbar-light" style="">
+                                                            <div class="">
+                                                                <a class="navbar-brand" href="#">
+                                                                    <img src="{{asset('assets/img/favicon/logo.png')}}" alt="" width="30%" height="30%" class="d-inline-block align-text-center ">
+                                                                </a>
+                                                                <h6 class="mb-1">Cabinet Medical Peditrique</h6>
+                                                                <h6>Le Pediatre du Soir</h6>
+                                                            </div>
+                                                        </nav>
+                                                        <div><span class="text-center">Sacré coeur 3, rue XXXXX, villa XXX</span></div>
+                                                        <div><span class="text-center">33 XXX XX XX</span></div>
+                                                    </div>
+                                                    <div class="ticket__body">
+                                                        <div class="row">
+                                                            <div class="col-6" style="text-align: left !important;">
+                                                                <span class="text-left">N° </span>
+                                                            </div>
+                                                            <div class="col-6" style="text-align: right !important;">
+                                                                <span id="date_ticket" style="text-align: right;"></span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="ticket__timing">
+                                                            <table class="table  w-100 mb-2">
+                                                                <thead style="border-bottom: 1px solid #000;">
+                                                                    <tr class="" style="">
+                                                                        <th>Consultation</th>
+                                                                        <th class="text-right" style="text-align: right;">Prix</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="" >
+                                                                        <td id="td_consultation"></td>
+                                                                        <td id="td_prix" style="text-align: right;"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                
+                                                            </table>
+                                                        </div>
+                                                        <div class="ticket__timing-total">
+                                                            <table class=" table-borderless w-100">
+                                                                <thead>
+                                                                    <tr class="" id="ipm_info_recap" hidden style="padding-bottom: 2px !important;">
+                                                                        <th style="font-size:16px">IPM</th>
+                                                                        <th style="font-size:16px; text-align: right;" id="th_taux"></th>
+                                                                    </tr>
+                                                                    <tr class="" style="padding-bottom: 2px !important;">
+                                                                        <th style="font-size:16px">Total</th>
+                                                                        <th style="font-size:16px; text-align: right;" id="th_total"></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="font-size:12px" >Paiement</th>
+                                                                        <th style="font-size:12px; text-align: right;" id="td_paiement"></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="font-size:12px" >Nombre CS</th>
+                                                                        <th style="font-size:12px; text-align: right;" id="td_paiement">1</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="ticket__footer" style="border-top:1px dashed #424f5e;">
+                                                        <p class="text-center">Merci et prompt rétablissement</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="ticket__timing">
-                                                <table class="table  w-100 mb-2">
-                                                    <thead style="border-bottom: 1px solid #000;">
-                                                        <tr class="" style="">
-                                                            <th>Consultation</th>
-                                                            <th class="text-right" style="text-align: right;">Prix</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="" >
-                                                            <td id="td_consultation"></td>
-                                                            <td id="td_prix" style="text-align: right;"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                    
-                                                </table>
+                                            <div class="text-center p-4">
+                                                <button type="butoon"  id="generer_ticket" class="btn btn-primary" style="width: 150px !important;"><i class="fa-solid fa-print fa-lg text-white me-3"></i>Imprimer</button>
+                                                <button type="button" id="rejeter_ticket" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" style="" ><i class="fa-solid fa-ban fa-lg text-white me-3"></i>Annuler</button>
                                             </div>
-                                            <div class="ticket__timing-total">
-                                                <table class=" table-borderless w-100">
-                                                    <thead>
-                                                        <tr class="" style="padding-bottom: 2px !important;">
-                                                            <th style="font-size:16px">Total</th>
-                                                            <th style="font-size:16px; text-align: right;" id="th_total"></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="font-size:12px" >Paiement</th>
-                                                            <th style="font-size:12px; text-align: right;" id="td_paiement"></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="font-size:12px" >Nombre CS</th>
-                                                            <th style="font-size:12px; text-align: right;" id="td_paiement">1</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="ticket__footer" style="border-top:1px dashed #424f5e;">
-                                            <p class="text-center">Merci et prompt rétablissement</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-center p-4">
-                                    <a href="#"  id="generer_ticket" class="btn btn-primary" style="width: 150px !important;">Générer</a>
-                                    <button type="submit" id="rejeter_ticket" class="btn btn-danger" style="" >Annuler</button>
-                                </div>
                             </div>
+                        
                         </div>
                     </div>
-                    
-                
-        <div class="modal fade modal-lg" id="cloture_caisse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered">
-                <div class="modal-content">
-                    
-                    <div class="modal-body" style="">
-                        <div class="container">
-                            <h6>Voulez-vous cloturer la caisse ?</h6>
-                        </div>
-                        <form action="{{route('register_encaissement_new')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="nombre_ticket" value="{{$nombre_ticket}}">
-                            <input type="hidden" name="montant_total" value="{{$somme_total}}">
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-circle-xmark fa-lg text-white me-3"></i>Cloturer</button>
-                        </form>
-                    </div>
-                
                 </div>
-            </div>
-        </div>
                 
                 <script>
             // Selection du button autre client
@@ -320,6 +375,24 @@
                     
                 });
 
+                // Selection d'ajout soin
+                document.getElementById("soin_check").addEventListener('click',function() {
+                    if (document.getElementById('soin_check').checked) {
+                        document.getElementById('soin_details').hidden=false;
+
+                        document.getElementById('description_soin').required=true;
+                        document.getElementById('nombre_soin').required=true;
+                        
+                    }
+                    else{
+                        document.getElementById('soin_details').hidden=true;
+                        document.getElementById('description_soin').required=false;
+                        document.getElementById('nombre_soin').required=false;
+                    }
+                    
+                });
+
+                // Selection d'un client existant
                 document.getElementById('client_exist').addEventListener('change', function(){
                     //alert('response');    
                     let slug_id = document.getElementById('client_exist').value;
@@ -344,22 +417,13 @@
                                 alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                             });
                 });
-                document.getElementById('nouveau_ticket').addEventListener('submit', function(e){
+
+                // Selection d'un nouveau client
+                    document.getElementById('nouveau_ticket').addEventListener('submit', function(e){
                         e.preventDefault();
-                        // document.getElementById('consultation').disabled=true;
-                        // document.getElementById('check_new_client').disabled=true;
-                        // document.getElementById('prenom_patient').disabled=true;
-                        // document.getElementById('nom_patient').disabled=true;
-                        // document.getElementById('adresse').disabled=true;
-                        // document.getElementById('personne_confiance').disabled=true;
-                        // document.getElementById('client_exist').disabled=true;
-                        // document.getElementById('ipm_check').disabled=true;
-                        // document.getElementById('type_ipm').disabled=true;
-                        // document.ge²&ée"r'tyhj,k;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      juyt-('"é&tElementById('participant').disabled=true;
-                        // document.getElementById('type_paiement').disabled=true;
                         
-                        document.getElementById('recapitulatif_ticket').hidden=false;
-                        document.getElementById('formulaire_ticket_create_ticket').hidden=true;
+                        //document.getElementById('recapitulatif_ticket').hidden=false;
+                        //document.getElementById('formulaire_ticket_create_ticket').hidden=true;
                         //document.getElementById('valider').disabled=true;
                         let slug = document.getElementById('consultation').value;
                             $.ajax({
@@ -379,7 +443,34 @@
                             .fail(function(error){
                                 alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                             });
-                            //document.getElementById('nouveau_ticket').submit();
+
+                            if (document.getElementById('ipm_check').checked) {
+                                let param_slug =[
+                                                document.getElementById('type_ipm').value,
+                                                document.getElementById('consultation').value,
+                                            ];
+                                    //console.log(param_slug);
+                                $.ajax({
+                                    type: "GET",
+                                    url: '/point_de_vente/my_caisse/espace_caisse/get-ipm-client/'+param_slug,
+                                    dataType : "json",
+                                })
+                                .done(function(response){
+                                        console.log(response);
+                                        document.getElementById('td_prix').innerText= response['prix_consultation_ipm'] +'FFCA';
+                                        document.getElementById('th_total').innerText= (response['prix_consultation_ipm'] - (response['prix_consultation_ipm'] * document.getElementById('taux_pourcentage').value / 100))  +' FCFA';
+                                        document.getElementById('ipm_info_recap').hidden=false;
+                                        document.getElementById('th_taux').innerText = document.getElementById('taux_pourcentage').value + " %";
+                                        
+                                        //console.log(response['nom_consultation']);
+                                        // alert(response['prix_consultation_ipm']);
+                                })
+                                .fail(function(error){
+                                    alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+                                });
+
+                            }
+                            $('#recapitulatif_ticket_modal').modal('show');
                     });
 
 
@@ -404,6 +495,7 @@
 
                     document.getElementById('generer_ticket').addEventListener('click',function(){
                         //alert(document.getElementById('prenom_patient').value);
+                        window.location.reload();
                         document.getElementById('nouveau_ticket').submit();
                         document.getElementById('recapitulatif_ticket').hidden=true;
                         document.getElementById('formulaire_ticket_create_ticket').hidden=false;
@@ -419,9 +511,16 @@
                         document.getElementById('type_ipm').value="";
                         document.getElementById('participant').value="";
                         document.getElementById('type_paiement').value="";
-                    })
-                   
-                    
+                        
+                    });
+
+                    const alerts = document.querySelectorAll('[class*="alert-"]')
+                    for (const alert of alerts) {
+                        setTimeout( function() {
+                            const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                            bootstrapAlert.close();
+                        }, 5000);
+                    }  
         </script>
     <style>
         /*
@@ -442,7 +541,7 @@
             background: #fff;
 
             width: 8cm !important;
-            height: 13cm !important;
+            height: 15cm !important;
         }
 
         .ticket__header {

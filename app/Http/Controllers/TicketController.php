@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
 
 class TicketController extends Controller
@@ -117,23 +118,119 @@ class TicketController extends Controller
             'prix_consultation_ipm' => $prix_consultation_ipm,
             'taux_IPM' => $taux_IPM,
         ];
-
         $pdf = PDF::loadView('point_ventes.magecompPDF', $data);
-
-        return $pdf->download('ticket_caisse.pdf');
-
-        // if ($genere_pdf) {
-        //     return redirect()->back()->with(['success' => "Ticket généré avec succès"]);
-            
-        // }
-        // return redirect()->back()->with(['error' => "Erreur d'impression du ticket"]);
         
-      
+        if ($pdf) {
+            $pdf->download("ticket_caisse".$ticket->numero.".pdf");
+            $pdf->save(public_path("storage\documents\Tickets\pdf\Ticket_caisse".$ticket->numero.".pdf"));
+            $patch_url = "Ticket_caisse".$ticket->numero;
+            $ticket->patch_url = $patch_url;
+
+            $ticket->save();
+
+            return redirect()->back()->with(['success' => "Ticket créé et imprimé avec succès"]);
+        }
+        else {
+            return redirect()->back()->with(['error' => "Ticket non imprimé"]);
+        }
+        
+        
     }
 
     public function getAllTickets(){
         $tickets = Ticket::all();
+        $consultations = Consultation::all();
         //dd($tickets->consultations);
-        return view('tickets.lists_des_tickets', compact('tickets'));
+        return view('tickets.lists_des_tickets', compact('tickets','consultations'));
+    }
+
+    public function etatFinancier(Request $request){
+
+        $etat_select = request('etat_select');
+        
+        $date_debut = strtotime(request('date_debut'));
+        $date_debut = date('Y-m-d',$date_debut);
+
+        $date_fin = $request->input('date_fin');
+
+        $name_consultation = "";
+        
+        if ($etat_select == 'consultation') {
+            if (request('consultation_select')=="all") {
+                if (!isset($date_fin) || $date_fin=="") {
+                    //dd($consultation_select);
+                    $etat_financiers = Ticket::whereDate('created_at', '=', $date_debut)->get();
+                    //$etat_financier = $etat_financier->where('consultation_id','=',$consultation_select);
+                    
+                }
+                else {
+                    $date_fin = strtotime($date_fin);
+                    $date_fin = date('Y-m-d',$date_fin);
+                    $etat_financiers = Ticket::whereDate('created_at','>=', $date_debut)->where('created_at','<=', $date_fin)->orderBy('created_at')->get();
+                  
+                }
+                $name_consultation = "Toutes les consultations";
+            }
+            else {
+                $consultation_select = intval(request('consultation_select'));
+                //dd($date_fin);
+                if (!isset($date_fin) || $date_fin=="") {
+                    //dd($consultation_select);
+                    $etat_financiers = Ticket::whereDate('created_at', '=', $date_debut)->get();
+                    //$etat_financier = $etat_financier->where('consultation_id','=',$consultation_select);
+                    
+                }
+                else {
+                    $date_fin = strtotime($date_fin);
+                    $date_fin = date('Y-m-d',$date_fin);
+                    $etat_financiers = Ticket::whereDate('created_at','>=', $date_debut)->where('created_at','<=', $date_fin)->orderBy('created_at')->get();
+                    $etat_financiers= $etat_financiers->where('consultation_id','=',$consultation_select);
+                
+                }
+                $name_consultation = Consultation::find($consultation_select);
+            }
+            $tab_donnee_consultation_retour = [
+                'type_consult' => $name_consultation->nom_consultation,
+                'date_debut' => $date_debut,
+                'date_fin' => $date_fin,
+            ];
+            return view('etat_financiers.etatf_financier_ticket_admin', compact('etat_financiers','tab_donnee_consultation_retour'));
+        }
+        else {
+            if (!isset($date_fin) || $date_fin=="") {
+                //dd($consultation_select);
+                $etat_financiers = Ticket::whereDate('created_at', '=', $date_debut)->get();
+                //$etat_financier = $etat_financier->where('consultation_id','=',$consultation_select);
+                
+            }
+            else {
+                $date_fin = strtotime($date_fin);
+                $date_fin = date('Y-m-d',$date_fin);
+                $etat_financiers = Ticket::whereDate('created_at','>=', $date_debut)->where('created_at','<=', $date_fin)->orderBy('created_at')->get();
+              
+            }
+            $tab_donnee_consultation_retour = [
+                'type_consult' => "Tickets",
+                'date_debut' => $date_debut,
+                'date_fin' => $date_fin,
+            ];
+            return view('etat_financiers.etatf_financier_ticket_admin', compact('etat_financiers','tab_donnee_consultation_retour'));
+        }
+
+        
+        
+        
+    }
+
+    public function getTicket($ticket_id){
+        $ticket = Ticket::find($ticket_id);
+        
+        $url_file = public_path("storage\documents\Tickets\pdf\Ticket_caisse".$ticket->numero.".pdf");
+        header("Content-type: application/pdf");
+
+        header("Content-Length: ". $url_file);
+
+        readfile($url_file);
+      
     }
 }

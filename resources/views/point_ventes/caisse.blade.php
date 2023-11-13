@@ -1,33 +1,36 @@
 @extends('layouts.appuser')
     @section('content')
                         <!--/ Hoverable Table rows -->
-                        @if($caisse!=null)
-                            <h5 class="pb-1 mb-4">Point vente</h5>
+                        @if(Auth::user()->point_vente)
+                            <div class="d-flex justify-content-start">
+                                <h5 class="pb-1 mb-4" style="margin-right: 20px;">Point vente</h5>
+                                <h5 class="pb-1 mb-4 text-primary"><i class="menu-icon tf-icons fa-solid fa-cash-register"></i>{{Auth::user()->point_vente->nom_point_vente}}</h5>
+                                                
+                            </div>
+                            
                             <div class="row mb-5">
                                 <div class="col-md-4 col-lg-3">
                                     <div class="card mb-3">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-6">
-                                                    <h5 class="card-title">{{$caisse->nom}}</h5>
-                                                </div>
-                                                <div class="col-6">
+                                                
+                                                <div class="col-7">
                                                     <h6 class="card-title">{{$recap_etat_journalier['date']}}</h6>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-7">
-                                                    <p class="card-text">Tickets vendu</p>
+                                                <div class="col-5">
+                                                    <p class="card-text">Tickets</p>
                                                 </div>
-                                                <div class="col-5 text-right" style="text-align: right;">
+                                                <div class="col-7 text-right" style="text-align: right;">
                                                     <h6 class="card-title badge bg-success ">{{$recap_etat_journalier['nombre_ticket']}}</h6>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-7">
-                                                    <p class="card-text">Montant total</p>
+                                                <div class="col-5">
+                                                    <p class="card-text">Solde</p>
                                                 </div>
-                                                <div class="col-5 text-right" style="text-align: right;">
+                                                <div class="col-7 text-right" style="text-align: right;">
                                                     <h6 class="card-title badge bg-success">{{$recap_etat_journalier['somme_total']}} FCFA</h6>
                                                 </div>
                                             </div>
@@ -36,7 +39,7 @@
                                                     <p class="card-text">Gérant</p>
                                                 </div>
                                                 <div class="col-7 text-right" style="text-align: right;">
-                                                    <p class="card-title" style="font-weight: bold;">{{$caisse->gerant}}</p>
+                                                    <p class="card-title" style="font-weight: bold;">{{$point_vente->gerant}}</p>
                                                 </div>
                                             </div>
                                             @if($recap_etat_journalier['nombre_ticket'])
@@ -53,49 +56,58 @@
                                     <div class="card p-3">
                                         <h5 class="card-header">Etat journalier</h5>
                                         <div class="table-responsive text-nowrap">
-                                            <table class="table table-hover" id="myTable">
+                                            <table class="table table-hover " id="myTable">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
-                                                        <th>Gerant</th>
                                                         <th>Tickets vendu</th>
                                                         <th>Montant total</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="table-border-bottom-0">
+                                                <tbody class="table-border-bottom-0 ">
+                                                    <?php
+                                                        $total_montant = 0;
+                                                        $nombre_total = 0;
+                                                    ?>
+                                                @foreach ($users_grouped as $date_group)
                                                     <tr class="cursor-pointer">
                                                         <td>
                                                             <i class="fa-solid fa-calendar fa-lg text-danger me-3"></i>
-                                                            <span class="fw-medium"></span>
+                                                            <span class="fw-medium">{{ $date_group->first()->created_at->format('d-m-Y') }}</span>
                                                         </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item" href="javascript:void(0);"
-                                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                                    >
-                                                                    <a class="dropdown-item" href="javascript:void(0);"
-                                                                    ><i class="bx bx-trash me-1"></i> Disable</a
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                        <?php
+                                                            $total = 0;
+                                                            $nombre = 0;
+                                                        ?>
+                                                        @foreach ($date_group as $etat)
+                                                            <?php
+                                                                $total += $etat->montant_total;
+                                                                $nombre ++;
+                                                            ?>
+                                                        @endforeach
+                                                        <td>{{$nombre}}</td>
+                                                        <td>{{$total}} FCFA</td>
+                                                        
                                                     </tr>
+                                                    <?php
+                                                        $total_montant += $total;
+                                                        $nombre_total += $nombre;
+                                                    ?>
+                                                @endforeach
                                                 </tbody>
+                                                <tfoot style="" class="table-dark">
+                                                    <tr>
+                                                        <th class="text-white">Total</th>
+                                                        <th class="text-white">{{$nombre_total}}</th>
+                                                        <th class="text-white">{{$total_montant}} FCFA</th>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endif
-                        @if($caisse==null)
+                        @else
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <i class="fa-solid fa-cash-register fa-xl"></i>    
                                 <strong>Point de vente non disponible</strong> 

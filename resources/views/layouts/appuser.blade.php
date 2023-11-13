@@ -13,7 +13,7 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet" />
-
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
@@ -27,6 +27,7 @@
     
     <!-- Helpers -->
     <script src="{{asset('assets/vendor/js/helpers.js')}}"></script>
+    
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{asset('assets/js/config.js')}}"></script>
@@ -36,6 +37,7 @@
      rel="stylesheet"
      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
    />
+
 </head>
 <body class="overflow-hidden">
     <!-- Layout wrapper -->
@@ -126,7 +128,7 @@
 
                         
                     @endif
-                    @if(Auth::user()->profil=='caissier')
+                    @if(Auth::user()->profil=='caissier' || Auth::user()->profil=='medecin')
                         <li class="menu-item">
                             <a href="{{route('my_caisse')}}" class="menu-link">
                                 <i class="menu-icon tf-icons fa-solid fa-cash-register"></i>
@@ -150,21 +152,29 @@
                             
                         </a>
                         <ul class="menu-sub">
-                            
-                            <li class="menu-item">
-                                    <a
-                                        href="{{route('list_clients')}}"
-                                        class="menu-link">
-                                        <div data-i18n="Landing">Clients</div>
-                                    </a>
-                            </li>
                             @if(Auth::user()->profil=='admin')
+                                <li class="menu-item">
+                                        <a
+                                            href="{{route('list_clients')}}"
+                                            class="menu-link">
+                                            <div data-i18n="Landing">Clients</div>
+                                        </a>
+                                </li>
                                 <li class="menu-item">
                                     <a
                                         href="{{route('list_users')}}"
                                         class="menu-link">
                                         <div data-i18n="Landing">Utilisateurs</div>
                                     </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->profil=='caissier' || Auth::user()->profil=='medecin')
+                                <li class="menu-item">
+                                        <a
+                                            href="{{route('list_clients_caisier')}}"
+                                            class="menu-link">
+                                            <div data-i18n="Landing">Clients</div>
+                                        </a>
                                 </li>
                             @endif
                             <li class="menu-item">
@@ -261,7 +271,7 @@
                     <!-- Content wrapper -->
                     <div class="content-wrapper" style="paddind:0px !important; margin:0px !important;">
                         <!-- Content -->
-                        <div class="container-xxl flex-grow-1 container-p-y " style="paddind:0px !important; overflow: scroll !important; height: 90vh !important;">
+                        <div class="container-xxl flex-grow-1 container-p-y " style="margin-bottom:0px;padding-bottom:20px !important; overflow-y: scroll !important; height: 85vh !important;">
                             @yield('content')
                         </div>
                     </div>
@@ -314,6 +324,8 @@
                 });
            
         } );
+
+        
     </script>
     <!-- Page JS -->
     <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>

@@ -28,4 +28,8 @@ class Ticket extends Model
     public function caisse(){
         return $this->hasMany(Caisse::class);
     }
+
+    public function soin(){
+        return $this->hasMany(Soin::class);
+    }
 }

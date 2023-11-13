@@ -28,7 +28,7 @@
                             <th>Adresse</th>
                             <th>Téléphone</th>
                             <th>IPM</th>
-                            <th>Taux</th>
+                            <th>Taux en %</th>
                             <th>Participant</th>
                             <th>Actions</th>
                             </tr>
@@ -70,7 +70,7 @@
                 <!--/ Hoverable Table rows -->
 
         <!-- modal add client -->
-        <div class="modal fade modal-lg" id="add_new_client" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="add_new_client" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog  modal-dialog-centered">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -210,7 +210,15 @@
                     document.getElementById('taux_pourcentage').required=false;
                     document.getElementById('participant_ipm').required=false;
                 }
-            })
+            });
+
+                const alerts = document.querySelectorAll('[class*="alert-"]')
+                    for (const alert of alerts) {
+                        setTimeout( function() {
+                            const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                            bootstrapAlert.close();
+                        }, 5000);
+                    }
         </script>
 
     @endsection

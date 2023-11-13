@@ -17,41 +17,33 @@
                                     <th>Taux IPM %</th>
                                     <th>Type paiement</th>
                                     <th>Total</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 @foreach($caisses as $caisse)
-                                    <tr>
+                                    <tr class="clickable-row" data-target="_blank" data-href="{{route('get_print_ticket', ['slug'=>$caisse->ticket->id])}}" style="cursor:pointer;">
                                         <td>
                                             <i class="fa-solid fa-ticket fa-lg text-success me-3"></i>
-                                            <span class="fw-medium">{{$caisse->ticket->date_creation}}</span>
+                                            <span class="fw-medium">{{$caisse->ticket->created_at->format('d-m-Y H:i:s')}}</span>
                                         </td>
                                         <td>{{$caisse->ticket->numero}}</td>
                                         <td><span class="badge bg-label-primary me-1">{{$caisse->ticket->consultation->nom_consultation}}</span></td>
                                         <td><span class=""></span>{{$caisse->ticket->client->prenom_client}} {{$caisse->ticket->client->nom_client}}</td>
-                                        <td><span class="">{{$caisse->ticket->client->ipm->nom_ipm}}</span></td>
-                                        <td><span class="">{{$caisse->ticket->client->taux_pourcentage}} %</span></td>
+                                        <td><span class="">{{$caisse->ticket->client->ipm->nom_ipm ?? "--"}}</span></td>
+                                        <td><span class="">{{$caisse->ticket->client->taux_pourcentage ?? "--"}}</span></td>
                                         <td>{{$caisse->ticket->type_paiement}}</td>
                                         <td>{{$caisse->ticket->montant_total}}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                            </div>
-                                            </div>
-                                        </td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot style="" class="table-dark">
+                                <tr>
+                                    <th class="text-white text-left" style="text-align: left !important;" colspan="4">Nombre de tickets : {{$caisses->count()}}</th>
+                                    <th class="text-white text-right" style="text-align: right !important;" colspan="4">Total : {{$caisses->sum('solde_ticket')}} FCFA</th>
+                                    
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

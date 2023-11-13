@@ -137,4 +137,14 @@
             </div>
         </div>
         <!--/ modal add client -->
+
+        <script>
+            const alerts = document.querySelectorAll('[class*="alert-"]')
+                    for (const alert of alerts) {
+                        setTimeout( function() {
+                            const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                            bootstrapAlert.close();
+                        }, 5000);
+                    }
+        </script>
     @endsection

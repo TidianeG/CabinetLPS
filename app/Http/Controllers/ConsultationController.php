@@ -33,21 +33,28 @@ class ConsultationController extends Controller
             'prix_type_consultation' => 'required|integer',
         ]);
         
-        $consultation = new Consultation();
-        $consultation->nom_consultation = $validated['nom_type_consultation'];
-        $consultation->description = $validated['description_type_consultation'];
-        $consultation->prix_consultation = $validated['prix_type_consultation'];
+        $consultation_exist = Consultation::where('nom_consultation',$validated['nom_type_consultation'])->first();
         
-        $consultation->user_id = Auth::user()->id;
-        $consultation->save();
-        if (empty($consultation)) {
-             
-             return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        if ($consultation_exist) {
+            return redirect()->back()->with(['error' => "Cette consultation existe déja !!!"]);
         }
         else {
-             
-            return redirect()->back()->with(['success' => "Consultation ajouté avec succès"]);
-       }
+            $consultation = new Consultation();
+            $consultation->nom_consultation = $validated['nom_type_consultation'];
+            $consultation->description = $validated['description_type_consultation'];
+            $consultation->prix_consultation = $validated['prix_type_consultation'];
+            
+            $consultation->user_id = Auth::user()->id;
+            $consultation->save();
+            if (empty($consultation)) {
+                
+                return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+            }
+            else {
+                
+                return redirect()->back()->with(['success' => "Consultation ajouté avec succès"]);
+            }
+        }
     }
 
     public function getConsultation($slug){

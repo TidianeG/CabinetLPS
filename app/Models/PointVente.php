@@ -19,4 +19,8 @@ class PointVente extends Model
     public function encaissement(){
         return $this->hasMany(Encaissement::class);
     }
+
+    public function statut_caisse(){
+        return $this->hasOne(StatutCaisse::class);
+    }
 }

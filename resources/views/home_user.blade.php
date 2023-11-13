@@ -6,7 +6,7 @@
                         <h4 class="mr-3" >Etat du jour : </h4><h4 id="date_jour" class="" style="margin-left:10px;"></h4>
                     </div>
                     <div class="row">
-                      <div class="col-lg-7 mb-4 order-0">
+                      <div class="col-lg-6 mb-4 order-0">
                         <div class="card">
                           <div class="d-flex align-items-end row">
                               <div class="card-header">
@@ -15,7 +15,7 @@
                               <div class="card-body">
                                 <div class="row">
                                   @foreach($consultations as $consultation)
-                                    <div class="col-lg-4 col-md-12 col-4 mb-4">
+                                    <div class="col-lg-4 col-xl-6 col-md-12  mb-4">
                                       <div class="card">
                                         <div class="card-body">
                                           <div class="card-title d-flex align-items-start justify-content-between">
@@ -34,13 +34,13 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                               </button>
                                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                <a class="dropdown-item" href="javascript:void(0);">Modifier</a>
-                                                <a class="dropdown-item" href="javascript:void(0);">Supprimer</a>
+                                                <a class="dropdown-item" href="javascript:void(0);">Afficher</a>
                                               </div>
                                             </div>
                                           </div>
                                           <h6 class="fw-medium d-block mb-1">{{$consultation->nom_consultation}}</h6>
-                                          <h4 class="card-title mb-2">{{$consultation->prix_consultation}} FCFA</h4>
+                                          <div class="d-flex justify-content-beetwen"><span class="mr-1" style="margin-right: 5px;">Tickets</span><span class="card-title mb-2 badge bg-success text-white" style="text-align: right;">{{$consultation->ticket->where('date_creation','=',date('Y-m-d'))->count()}}</span></div>
+                                          <div class="d-flex justify-content-beetwen"><span class="mr-1" style="margin-right: 5px;">Total</span><span class="card-title mb-2 badge bg-success text-white" style="text-align: right;">{{$consultation->ticket->where('date_creation','=',date('Y-m-d'))->sum('montant_total')}} FCFA</span></div>
                                         </div>
                                       </div>
                                     </div>
@@ -50,7 +50,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-5 mb-4 order-1">
+                      <div class="col-lg-6 mb-4 order-1">
                           <div class="card">
                             <div class="d-flex align-items-end row">
                                 <div class="card-header bg-blue">
@@ -59,12 +59,12 @@
                                 <div class="card-body">
                                   <div class="row">
                                     @foreach($point_ventes as $point_vente)
-                                      <div class="col-lg-6 col-md-12 col-6 mb-4">
+                                      <div class="col-lg-4 col-xl-6 mb-4">
                                         <div class="card">
                                           <div class="card-body">
                                             <div class="card-title d-flex align-items-start justify-content-between">
                                               <div class="avatar flex-shrink-0">
-                                                <span class="badge bg-success text-center"><i class="fa-solid fa-cash-register  text-white menu-icon tf-icons"></i></span>
+                                                <span class="badge bg-primary text-center"><i class="fa-solid fa-cash-register  text-white menu-icon tf-icons"></i></span>
                                                 
                                               </div>
                                               <div class="dropdown">
@@ -78,13 +78,19 @@
                                                   <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                  <a class="dropdown-item" href="javascript:void(0);">Modifier</a>
-                                                  <a class="dropdown-item" href="javascript:void(0);">Supprimer</a>
+                                                  <a class="dropdown-item" href="javascript:void(0);">Afficher</a>
                                                 </div>
                                               </div>
                                             </div>
-                                            <h6 class="fw-medium d-block mb-1">{{$point_vente->nom}}</h6>
-                                            <span class="card-title mb-2">{{$point_vente->gerant}}</span>
+
+                                            <h6 class="fw-medium d-block mb-1">{{$point_vente->nom_point_vente}}</h6>
+                                            <div><span class="mr-1" style="margin-right: 5px;">Solde caisse</span><span class="card-title mb-2 text-white badge bg-success">{{$point_vente->user->caisse->sum('solde_ticket')}} FCFA</span></div>
+                                            @if($point_vente->statut_caisse->statut == 1)
+                                              <span class="mr-1" style="margin-right: 5px;">Status</span><span class="card-title mb-2 text-success">Ouvert</span>
+                                            @else
+                                            <span class="mr-1" style="margin-right: 5px;">Status</span><span class="card-title mb-2 text-danger">Fermé</span>
+                                            @endif
+                                            
                                           </div>
                                         </div>
                                       </div>
@@ -95,52 +101,47 @@
                           </div>
                       </div>
                       <!-- Total Revenue -->
-                      <div class="col-12 col-lg-7 order-2 order-md-3 order-lg-2 mb-4">
+                      <div class="col-12  order-2 order-md-3 order-lg-2 mb-4">
                         <div class="card">
                           <div class="row row-bordered g-0">
                             <div class="">
-                              <h5 class="card-header m-0 me-2 pb-3">Clients</h5>
+                              <h5 class="card-header m-0 me-2 pb-3">Tickets</h5>
                             </div>
                             <div class="">
                               <div class="card-body">
                               <div class="table-responsive text-nowrap">
-                              <table class="table table-hover">
-                                  <thead>
-                                      <tr>
-                                      <th>Client</th>
-                                      <th>Adresse</th>
-                                      <th>Personne confiance</th>
-                                      <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="table-border-bottom-0">
-                                      @foreach($clients as $client)
-                                          <tr>
-                                              <td>
-                                                  <i class="fa-solid fa-person fa-lg text-danger me-3"></i>
-                                                  <span class="fw-medium">{{$client->prenom}} {{$client->nom}}</span>
-                                              </td>
-                                              <td>{{$client->adresse}}</td>
-                                              <td><span class="badge bg-label-primary me-1">{{$client->personne_confiance}}</span></td>
-                                              <td>
-                                                  <div class="dropdown">
-                                                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                      <i class="bx bx-dots-vertical-rounded"></i>
-                                                  </button>
-                                                  <div class="dropdown-menu">
-                                                      <a class="dropdown-item" href="javascript:void(0);"
-                                                      ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                      >
-                                                      <a class="dropdown-item" href="javascript:void(0);"
-                                                      ><i class="bx bx-trash me-1"></i> Delete</a
-                                                      >
-                                                  </div>
-                                                  </div>
-                                              </td>
-                                          </tr>
-                                      @endforeach
-                                  </tbody>
-                              </table>
+                              <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr >
+                                    <th class="text-center">Heure</th>
+                                    <th class="text-center">Numero</th>
+                                    <th class="text-center">Consultation</th>
+                                    <th class="text-center">Client</th>
+                                    <th class="text-center">IPM</th>
+                                    <th class="text-center">Taux IPM %</th>
+                                    <th class="text-center">Type paiement</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @foreach($tickets as $ticket)
+                                    <tr class="clickable-row" data-target="_blank" data-href="{{route('get_print_ticket', ['slug'=>$ticket->id])}}" style="cursor:pointer;">
+                                        <td class="text-center">
+                                            <i class="fa-solid fa-ticket fa-lg text-success me-3"></i>
+                                            <span class="fw-medium">{{$ticket->heure_creation}}</span>
+                                        </td>
+                                        <td class="text-center">{{$ticket->numero}}</td>
+                                        <td class="text-center"><span class="badge bg-label-primary me-1">{{$ticket->consultation->nom_consultation}}</span></td>
+                                        <td class="text-center"><span class=""></span>{{$ticket->client->prenom_client}} {{$ticket->client->nom_client}}</td>
+                                        <td class="text-center"><span class="">{{$ticket->client->ipm->nom_ipm ?? "--"}}</span></td>
+                                        <td class="text-center"><span class="">{{$ticket->client->taux_pourcentage ?? "--"}}</span></td>
+                                        <td class="text-center">{{$ticket->type_paiement}}</td>
+                                        <td class="text-center">{{$ticket->montant_total}}</td>
+                                        
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                           </div>
                               </div>
                             </div>

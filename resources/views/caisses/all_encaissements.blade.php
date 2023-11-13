@@ -7,24 +7,25 @@
                         <table class="table table-hover" id="myTable">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Nombre consultation</th>
-                                    <th>Gérant caisse</th>
-                                    <th>Montant total</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Nombre tickets vendu</th>
+                                    <th class="text-center">Effectué par</th>
+                                    <th class="text-center">Montant total</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 @foreach($encaissements as $encaissement)
                                     <tr>
-                                        <td>
+                                        <td class="text-center">
                                             <i class="fa-solid fa-ticket fa-lg text-success me-3"></i>
-                                            <span class="fw-medium">{{$encaissement->nombre_ticket}}</span>
+                                            <span class="fw-medium">{{$encaissement->created_at}}</span>
                                         </td>
-                                        <td>{{$encaissement->user->prenom}} {{$encaissement->user->nom}}</td>
-                                        <td><span class="badge bg-label-primary me-1">{{$encaissement->montant_total}}</span></td>
+                                        <td class="text-center">{{$encaissement->nombre_ticket}}</td>
+                                        <td class="text-center">{{$encaissement->user->prenom}} {{$encaissement->user->nom}}</td>
+                                        <td class="text-center"><span class="badge bg-label-primary me-1">{{$encaissement->montant_versement}} FCFA</span></td>
                                         
-                                        <td>
+                                        <td class="text-center">
                                             <div class="dropdown">
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-vertical-rounded"></i>

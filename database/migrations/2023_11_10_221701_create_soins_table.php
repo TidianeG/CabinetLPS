@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('soins', function (Blueprint $table) {
             $table->id();
-            $table->string('numero')->unique();
-            $table->string('type_paiement');
+            $table->string('description_soin');
+            $table->integer('nombre_soin');
+            $table->unsignedBigInteger('montant_total_soin');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
@@ -27,22 +28,12 @@ return new class extends Migration
                 ->on('clients')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
-            $table->unsignedBigInteger('consultation_id');
-            $table->foreign('consultation_id')
+            $table->unsignedBigInteger('ticket_id');
+            $table->foreign('ticket_id')
                 ->references('id')
-                ->on('consultations')
+                ->on('tickets')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
-            $table->unsignedBigInteger('point_vente_id');
-            $table->foreign('point_vente_id')
-                    ->references('id')
-                    ->on('point_ventes')
-                    ->onDelete('restrict')
-                    ->onUpdate('restrict');
-            $table->decimal('montant_total', $precision = 8, $scale = 3);
-            $table->date('date_creation');
-            $table->time('heure_creation');
-            $table->string('patch_url')->nullable();
             $table->timestamps();
         });
     }
@@ -52,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('soins');
     }
 };
