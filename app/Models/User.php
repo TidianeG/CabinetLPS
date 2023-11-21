@@ -69,6 +69,10 @@ class User extends Authenticatable
     }
 
     public function soin(){
-        return $this->hasMany(Soin::class);
+        return $this->hasOne(Soin::class);
+    }
+
+    public function soin_en_attente(){
+        return $this->hasOne(Soin::class);
     }
 }

@@ -18,7 +18,7 @@
                     </div>
                     <hr class="my-0" />
                     <div class="card-body">
-                      <form action="{{route('user_update')}}" method="POST">
+                      <form action="#" method="POST">
                         <div class="row">
                           <div class="mb-3 col-md-6">
                             <label for="firstName" class="form-label">Prénom</label>

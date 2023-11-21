@@ -32,4 +32,8 @@ class Ticket extends Model
     public function soin(){
         return $this->hasMany(Soin::class);
     }
+
+    public function soin_en_attente(){
+        return $this->hasOne(Soin::class);
+    }
 }

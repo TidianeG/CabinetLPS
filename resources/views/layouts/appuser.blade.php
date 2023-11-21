@@ -128,7 +128,7 @@
 
                         
                     @endif
-                    @if(Auth::user()->profil=='caissier' || Auth::user()->profil=='medecin')
+                    @if(Auth::user()->profil=='caissier')
                         <li class="menu-item">
                             <a href="{{route('my_caisse')}}" class="menu-link">
                                 <i class="menu-icon tf-icons fa-solid fa-cash-register"></i>
@@ -138,6 +138,16 @@
                         </li>
                         <li class="menu-item">
                             <a href="{{route('list_all_tickets')}}" class="menu-link ">
+                                <i class="menu-icon tf-icons fa-solid fa-ticket"></i>
+                                <div data-i18n="Front Pages" style="font-weight: bold;">Tickets</div>
+                                
+                            </a>
+                        </li>
+                    @endif
+
+                    @if(Auth::user()->profil=='medecin')
+                        <li class="menu-item">
+                            <a href="{{route('medecin_space')}}" class="menu-link ">
                                 <i class="menu-icon tf-icons fa-solid fa-ticket"></i>
                                 <div data-i18n="Front Pages" style="font-weight: bold;">Tickets</div>
                                 
@@ -168,10 +178,10 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(Auth::user()->profil=='caissier' || Auth::user()->profil=='medecin')
+                            @if(Auth::user()->profil=='caissier')
                                 <li class="menu-item">
                                         <a
-                                            href="{{route('list_clients_caisier')}}"
+                                            href="{{route('list_clients_caisier_space')}}"
                                             class="menu-link">
                                             <div data-i18n="Landing">Clients</div>
                                         </a>
@@ -238,12 +248,6 @@
                                 <a class="dropdown-item" href="{{route('my_account')}}">
                                     <i class="bx bx-user me-2"></i>
                                     <span class="align-middle">Mon Profil</span>
-                                </a>
-                                </li>
-                                <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bx bx-cog me-2"></i>
-                                    <span class="align-middle">Parametres</span>
                                 </a>
                                 </li>
                                 

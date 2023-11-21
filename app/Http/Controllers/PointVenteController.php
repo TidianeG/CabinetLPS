@@ -9,6 +9,7 @@ use App\Models\ConsultationIPM;
 use App\Models\IPM;
 use PDF;
 use App\Models\PointVente;
+use App\Models\SoinEnAttente;
 use App\Models\StatutCaisse;
 use App\Models\Ticket;
 use App\Models\User;
@@ -71,7 +72,10 @@ class PointVenteController extends Controller
     }
 
     public function myCaisse(){
-        $etat_journalier = Ticket::where('user_id',Auth::user()->id);
+
+        $soin_en_attente_validation = SoinEnAttente::all();
+
+        $etat_journalier = Ticket::where('user_id',Auth::user()->id)->get();
         $users_grouped = $etat_journalier->groupBy(function ($item, $key) {
             return $item->created_at->format('d-m-Y');
         });
@@ -94,10 +98,11 @@ class PointVenteController extends Controller
             'somme_total' => $somme_total
         ];
         //dd($recap_etat_journalier);
-        return view('point_ventes.caisse',compact('recap_etat_journalier','users_grouped','point_vente'));
+        return view('point_ventes.caisse',compact('recap_etat_journalier','users_grouped','point_vente','soin_en_attente_validation'));
     }
 
     public function espaceCaisse(){
+        $soin_en_attente_validation = SoinEnAttente::all();
 
         $clients = Client::all();
         $consultations = Consultation::all();
@@ -122,19 +127,21 @@ class PointVenteController extends Controller
         $statu_caisse->statut = 1;
         $statu_caisse->save();
 
-        return view('point_ventes.espace_vente', compact('clients','consultations','ipms','nombre_ticket','somme_total','point_vente'));
+        return view('point_ventes.espace_vente', compact('clients','consultations','ipms','nombre_ticket','somme_total','point_vente','soin_en_attente_validation'));
     }
 
     public function getAllTickets(){
+        $soin_en_attente_validation = SoinEnAttente::all();
         $tickets = Ticket::where('user_id','=',Auth::user()->id)->get();
         $consultations = Consultation::all();
-        return view('point_ventes.list_all_tickets', compact('tickets','consultations'));
+        return view('point_ventes.list_all_tickets', compact('tickets','consultations','soin_en_attente_validation'));
     }
 
     public function getAllTicketsCaisse(){
+        $soin_en_attente_validation = SoinEnAttente::all();
         $caisses = Caisse::where('user_id','=',Auth::user()->id)->get();
 
-        return view('tickets.list_all_tickets_caisse', compact('caisses'));
+        return view('tickets.list_all_tickets_caisse', compact('caisses','soin_en_attente_validation'));
     }
 
     public function getIPMClient($paramipmconsult){

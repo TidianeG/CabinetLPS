@@ -44,4 +44,10 @@ class HomeController extends Controller
     public function getAccount(){
         return view('profile');
     }
+
+    public function spaceMedecinAllTickets(){
+
+        $tickets = Ticket::whereDate('created_at','=',date('Y-m-d'))->get();
+        return view('medecin.get_all_tickets', compact('tickets'));
+    }
 }

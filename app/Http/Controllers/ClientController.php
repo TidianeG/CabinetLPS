@@ -29,6 +29,13 @@ class ClientController extends Controller
         return view('clients.clients',compact('clients','ipms'));
     }
 
+    public function getClientsCaissier(){
+        $clients = Client::all();
+        $ipms = IPM::all();
+        
+        return view('clients.clients_caissier',compact('clients','ipms'));
+    }
+
     public function getClient($slug){
         $client = Client::find($slug);
         return view('clients.get_client',compact('client'));
@@ -97,6 +104,15 @@ class ClientController extends Controller
             $client->ipm_id = $request->input('ipm_client');
         }
 
+        $lastid = Client::latest('id')->first();
+        
+        if ($lastid) {
+            $lastid_id = $lastid->id;
+        }
+        if (!$lastid) {
+            $lastid_id=0;
+        }
+        $client->numero_client = 'P/000'.$lastid_id+1;
         $client->prenom_client = $validated['prenom_patient'];
         $client->nom_client = $validated['nom_patient'];
         $client->personne_confiance = $validated['personne_confiance'];

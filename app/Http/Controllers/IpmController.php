@@ -61,7 +61,7 @@ class IpmController extends Controller
         ]);
 
         $consultation_ipm_exist = ConsultationIPM::where('consultation_id', $validated['select_consultation']);
-        if ($consultation_ipm_exist) {
+        if ($consultation_ipm_exist==null) {
             return redirect()->back()->with(['error' => "Ce prix est déja défini"]);
         } else {
             $consultation_ipm = new ConsultationIPM();

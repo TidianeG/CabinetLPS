@@ -48,6 +48,9 @@ class LoginController extends Controller
         (Auth::user()->profil=='caissier') {
             return redirect()->route('my_caisse');
         }
+        elseif (Auth::user()->profil=='medecin') {
+            return redirect()->route('medecin_space');
+        }
         else {
             return redirect()->route('login');
         }

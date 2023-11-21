@@ -2,10 +2,17 @@
     @section('content')
                         <!--/ Hoverable Table rows -->
                         @if(Auth::user()->point_vente)
-                            <div class="d-flex justify-content-start">
-                                <h5 class="pb-1 mb-4" style="margin-right: 20px;">Point vente</h5>
-                                <h5 class="pb-1 mb-4 text-primary"><i class="menu-icon tf-icons fa-solid fa-cash-register"></i>{{Auth::user()->point_vente->nom_point_vente}}</h5>
-                                                
+                            <div class="row">
+                                <div class="col-7">
+                                    <div class="d-flex justify-content-start">
+                                        <h5 class="pb-1 mb-4" style="margin-right: 20px;">Point vente</h5>
+                                        <h5 class="pb-1 mb-4 text-primary"><i class="menu-icon tf-icons fa-solid fa-cash-register"></i>{{Auth::user()->point_vente->nom_point_vente}}</h5>
+                                                        
+                                    </div>
+                                </div>
+                                <div class="col-5" style="text-align: right;">
+                                    <a href="{{route('get_all_soin_attente_validation')}}"><span>Soin(s) en attente de validation : ({{$soin_en_attente_validation->count()}})</span></a>
+                                </div>
                             </div>
                             
                             <div class="row mb-5">
@@ -52,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-lg-9">
                                     <div class="card p-3">
                                         <h5 class="card-header">Etat journalier</h5>
                                         <div class="table-responsive text-nowrap">

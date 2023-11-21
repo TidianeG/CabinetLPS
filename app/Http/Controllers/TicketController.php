@@ -8,6 +8,7 @@ use App\Models\Consultation;
 use App\Models\ConsultationIPM;
 use App\Models\IPM;
 use App\Models\PointVente;
+use App\Models\Soin;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use PDF;
@@ -30,7 +31,7 @@ class TicketController extends Controller
 
 
     public function createTicket(Request $request){
-
+        //dd($request);
         
         $consultation = Consultation::find($request->input('consultation'));
         $ticket = new Ticket();
@@ -41,8 +42,21 @@ class TicketController extends Controller
         
         $point_vente = PointVente::where('gerant','=',$gerant)->first();
         $test_client_ipm = 0;
+
+        // Si on selectionne un nouveau client
+        // Si on selectionne un nouveau client
         if ($request->input('check_new_client')==1) {
+            $lastid_client = Client::latest('id')->first();
+            
+            if ($lastid_client) {
+                $lastid_client_id = $lastid_client->id;
+            }
+            if (!$lastid_client) {
+                $lastid_client_id=0;
+            }
             $client = new Client();
+            $client->numero_client = 'P/000'.$lastid_client_id+1;
+            
             $client->prenom_client = $request->input('prenom_patient');
             $client->nom_client = $request->input('nom_patient');
             $client->adresse_client = $request->input('adresse');
@@ -61,6 +75,17 @@ class TicketController extends Controller
             $client_id = $client->id;
         }
 
+        // Si le client selectionner doit avoir un IPM
+        // Si le client selectionner doit avoir un IPM
+        if (($request->input('check_new_client')!=1) && ($request->input('ipm_check')==1)) {
+            $client->participant = $request->input('participant');
+            $client->taux_pourcentage = $request->input('taux_pourcentage');
+            $client->ipm_id = intval($request->input('type_ipm'));
+            $client->save();
+        }
+
+        // Début création du ticket
+        // Début création du ticket
         $lastid = Ticket::latest('id')->first();
         
         if ($lastid) {
@@ -128,11 +153,11 @@ class TicketController extends Controller
 
             $ticket->save();
 
-            return redirect()->back()->with(['success' => "Ticket créé et imprimé avec succès"]);
+            return $pdf->stream($patch_url.'.pdf'); //redirect()->back()->with(['success' => "Ticket créé et imprimé avec succès"]); //$pdf->stream($patch_url.'.pdf');//
         }
-        else {
-            return redirect()->back()->with(['error' => "Ticket non imprimé"]);
-        }
+        // else {
+        //     return redirect()->back()->with(['error' => "Ticket non imprimé"]);
+        // }
         
         
     }
@@ -225,12 +250,12 @@ class TicketController extends Controller
     public function getTicket($ticket_id){
         $ticket = Ticket::find($ticket_id);
         
-        $url_file = public_path("storage\documents\Tickets\pdf\Ticket_caisse".$ticket->numero.".pdf");
-        header("Content-type: application/pdf");
+        //$url_file = public_path("storage\documents\Tickets\pdf\Ticket_caisse".$ticket->numero.".pdf");
+        //header("Content-type: application/pdf");
 
-        header("Content-Length: ". $url_file);
+        //header("Content-Length: ". $url_file);
 
-        readfile($url_file);
-      
+        //readfile($url_file);
+      return view('tickets.ticket', compact('ticket'));
     }
 }

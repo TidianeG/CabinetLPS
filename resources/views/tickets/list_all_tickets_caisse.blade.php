@@ -1,10 +1,10 @@
 @extends('layouts.appuser')
     @section('content')
-        <div class="card p-2">
-                <div class="m-2" >
-                    <a href="{{route('espace_caisse')}}" class="btn btn-primary"><i class="fa-solid fa-rotate-left fa-lg text-white me-3"></i>Quitter</a>
-                </div>
-                <h5 class="card-header">Liste des tickets de la caisse</h5>
+                <div class="card p-2">
+                    <div class="m-2" >
+                        <a href="{{route('espace_caisse')}}" class="btn btn-primary"><i class="fa-solid fa-rotate-left fa-lg text-white me-3"></i>Quitter</a>
+                    </div>
+                    <h5 class="card-header">Liste des tickets de la caisse</h5>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover" id="myTable">
                             <thead>
