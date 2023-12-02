@@ -8,20 +8,20 @@
 </head>
 <body>
                            
-                                <div class="l-col-right ticket-wrap" aria-label="A fake boat ticket demonstrating mixing font weights and widths">
-                                    <div class="ticket p-1" aria-hidden="true">
-                                        <div class="ticket__header" style="border-bottom:1px dashed #424f5e;">
+                                <div class="ticket-wrap" aria-label="A fake boat ticket demonstrating mixing font weights and widths">
+                                    <div class="ticket" aria-hidden="true">
+                                        <div class="ticket__header" style="border-bottom:1px dashed #424f5e;text-align: center;">
                                             <nav class="navbar navbar-light" style="margin-bottom: 10px !important;">
                                                 <div class="">
                                                     <a class="navbar-brand" href="#">
-                                                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logo.png'))) }}" style="width: 20%; height: 70px;" >
+                                                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logo.png'))) }}" style="width: 40%; height: 70px;" >
                                                     </a>
                                                     <h6 class="mb-1">Cabinet Medical Peditrique</h6>
                                                     <h6>Le Pediatre du Soir</h6>
                                                 </div>
                                             </nav>
-                                            <span class="text-center">Sacré coeur 3, rue XXXXX, villa XXX</span>
-                                            <span class="text-center">33 XXX XX XX</span>
+                                            <span class="text-center">Sacré coeur 3 près de la <br>Boulangerie Jaune</span><br>
+                                            <span class="text-center">+221 33 848 93 21</span><br>
                                         </div>
                                         <div class="ticket__body">
                                             <div class="row">
@@ -47,9 +47,9 @@
                                                         <tr class="" >
                                                             <td id="td_consultation">{{$consultation}}</td>
                                                             @if($prix_consultation_ipm != 0)
-                                                                <td id="td_prix" style="text-align: right;">{{$prix_consultation_ipm}}</td>
+                                                                <td id="td_prix" style="text-align: right;">{{$prix_consultation_ipm}} fcfa</td>
                                                             @else
-                                                                <td id="td_prix" style="text-align: right;">{{$prix}}</td>
+                                                                <td id="td_prix" style="text-align: right;">{{$prix}} fcfa</td>
                                                             @endif
                                                         </tr>
                                                     </tbody>
@@ -68,7 +68,7 @@
                                                         
                                                         <tr class="" style="padding-bottom: 2px !important;">
                                                             <th style="font-size:16px">Total</th>
-                                                            <th style="font-size:16px; text-align: right;" id="th_total">{{$total}}</th>
+                                                            <th style="font-size:16px; text-align: right;" id="th_total">{{$total}} fcfa</th>
                                                         </tr>
                                                         <tr>
                                                             <th style="font-size:12px" >Paiement</th>
@@ -83,7 +83,7 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="ticket__footer" style="border-top:1px dashed #424f5e;">
+                                        <div class="ticket__footer " style="border-top:1px dashed #424f5e;">
                                             <p class="text-center">Merci et prompt rétablissement</p>
                                         </div>
                                     </div>
@@ -94,30 +94,30 @@
         *	TICKET
         *	---------------------------------------------
         */
-
-        .ticket-wrap {
+        
+        @page {
+            size :8.0cm 14cm;
+            margin: 1px 1px;
             text-align: center;
         }
+        
 
         .ticket {
+            padding-left: 2px;
+            padding-right: 2px;
+            
             display: inline-block;
-            margin: 0 auto;
             border: 1px dashed #000;
+            
             font-family: "Variable Bahnschrift", "FF DIN", "Franklin Gothic", "Helvetica Neue", sans-serif;
             font-feature-settings: "kern" 1;
             background: #fff;
 
-            width: 8cm !important;
-            height: 15cm !important;
         }
-        body{
-            width: 8cm !important;
-            height: 15cm !important;
-        }
+        
 
         .ticket__header {
-            margin: 0;
-            padding: 0;
+            
             background: #fff;
         }
 

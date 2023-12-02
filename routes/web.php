@@ -20,19 +20,28 @@ use App\Http\Middleware\Medecin;
 
 Route::middleware(Admin::class)->group(function () {
     
-    Route::get('/list_clients', [App\Http\Controllers\ClientController::class, 'getClients'])->name('list_clients');
-    
-    Route::get('/list_clients/get_client/{slug}', [App\Http\Controllers\ClientController::class, 'getClient'])->name('get_client');
-    
     Route::get('/list_type_consultation', [App\Http\Controllers\ConsultationController::class, 'getConsultations'])->name('list_type_consultation');
     
     Route::post('/register_consultation', [App\Http\Controllers\ConsultationController::class, 'registerConsultation'])->name('register_consultation');
+
+    Route::put('/update_consultation', [App\Http\Controllers\ConsultationController::class, 'updateConsultation'])->name('update_consultation');
     
     Route::get('/list_users', [App\Http\Controllers\ClientController::class, 'getUsers'])->name('list_users');
+
+    Route::get('/list_users/get-user-cm/{slug}', [App\Http\Controllers\ClientController::class, 'getUser'])->name('get_user_cm');
+    
+    Route::put('/list_users/get-user-cm/update_password_user_cm', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePasswordUserCM'])->name('update_password_user_cm');    
+
+    Route::put('/list_users/get-user-cm/update_user_cm', [App\Http\Controllers\ClientController::class, 'updateUserCM'])->name('update_user_cm');    
+    
+    Route::put('/list_users/get-user-cm/update_user_admin', [App\Http\Controllers\ClientController::class, 'updateUserAdmin'])->name('update_user_admin');    
     
     Route::post('/register_user', [App\Http\Controllers\ClientController::class, 'create_user'])->name('register_user');
     
     Route::get('/list_point_de_ventes', [App\Http\Controllers\PointVenteController::class, 'getPointsVentes'])->name('list_point_de_ventes');    
+    
+    Route::put('/update_point_de_vente', [App\Http\Controllers\PointVenteController::class, 'updatePointVente'])->name('update_point_de_vente');    
+    
     
     Route::post('/register_point_vente', [App\Http\Controllers\PointVenteController::class, 'registerPointVente'])->name('register_point_vente');
     
@@ -77,6 +86,7 @@ Route::middleware(Caissier::class)->group(function () {
 
     Route::get('/point_de_vente/soins-attente-validation/save-soin/{slug}', [App\Http\Controllers\SoinController::class, 'saveSoin'])->name('save_soin');
 
+    Route::post('/generer_facture', [App\Http\Controllers\FactureController::class, 'genererFacture'])->name('generer_facture');
 });
 
 Route::middleware(Medecin::class)->group(function () {
@@ -96,5 +106,14 @@ Route::post('/register_client', [App\Http\Controllers\ClientController::class, '
 Route::get('/my_account', [App\Http\Controllers\HomeController::class, 'getAccount'])->name('my_account');
 
 Route::get('/get-all-tickets/get-print-ticket/{slug}', [App\Http\Controllers\TicketController::class, 'getTicket'])->name('get_print_ticket');    
+Route::get('/get-all-tickets/get-print-ticket/{slug}', [App\Http\Controllers\TicketController::class, 'getTicket'])->name('get_print_ticket');    
 
+Route::put('/my_account/update_password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePasswordProfile'])->name('password.update_profile');    
+
+
+Route::get('/list_clients', [App\Http\Controllers\ClientController::class, 'getClients'])->name('list_clients');
+    
+    Route::get('/list_clients/get_client/{slug}', [App\Http\Controllers\ClientController::class, 'getClient'])->name('get_client');
+    
+    Route::put('/list_clients/get_client/update_client', [App\Http\Controllers\ClientController::class, 'updateClient'])->name('update_client');
 Auth::routes();

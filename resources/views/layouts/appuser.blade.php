@@ -54,10 +54,9 @@
                 </nav>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    
                     @if(Auth::user()->profil=='admin')
                         <!-- Dashboards -->
-                        <li class="menu-item active open">
+                        <li class="menu-item active">
                             <a href="javascript:void(0);" class="menu-link menu-toggle">
                                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                 <div data-i18n="Dashboards">Tableau de bord</div>
@@ -66,8 +65,7 @@
                             <ul class="menu-sub">
                                 <li class="menu-item">
                                 <a
-                                    href="{{route('user_space')}}"
-                                    class="menu-link">
+                                    href="{{route('user_space')}}" class="menu-link">
                                     <div data-i18n="CRM" class="text-bold" style="font-weight: bold;">Accueil</div>
                                 </a>
                                 </li>
@@ -201,7 +199,7 @@
             </aside>
                 <!-- / Menu -->
             <!-- Layout container -->
-            <div class="layout-page ">
+            <div class="layout-page " style="background-image: url('public/assets/img/backgrounds/font-image.JPEG');">
                 <!-- Navbar -->
 
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
@@ -273,7 +271,7 @@
 
                 <main class="pt-2 ">
                     <!-- Content wrapper -->
-                    <div class="content-wrapper" style="paddind:0px !important; margin:0px !important;">
+                    <div class="content-wrapper" style="paddind:0px !important; margin:0px !important; ">
                         <!-- Content -->
                         <div class="container-xxl flex-grow-1 container-p-y " style="margin-bottom:0px;padding-bottom:20px !important; overflow-y: scroll !important; height: 85vh !important;">
                             @yield('content')
@@ -283,10 +281,15 @@
             </div>
                         <!-- / Layout page -->
         </div>
-
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    <style>
+        .layout-page{
+            background-image: url("{{asset('assets/img/backgrounds/font-image.JPEG')}}") !important;
+            background-position: center;
+        } 
+    </style>
 
     <!-- / Layout wrapper -->
 
@@ -315,13 +318,13 @@
     <script>
        
         $(document).ready( function () {
-                        //$('#myTable').DataTable();
-                        new DataTable('#myTable', {
-                                language: {
-                                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json',
-                                },
-                            });
-                    });
+            //$('#myTable').DataTable();
+            new DataTable('#myTable', {
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json',
+                },
+            });
+        });
         jQuery(document).ready(function($) {
                 $(".clickable-row").click(function() {
                     window.location = $(this).data("href");

@@ -31,7 +31,7 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                         @foreach( $users as $user)
-                            <tr class="cursor-pointer">
+                            <tr class="cursor-pointer clickable-row" data-href="{{route('get_user_cm',['slug'=>$user->id])}}">
                                 <td>
                                     <i class="fa-solid fa-user fa-lg text-danger me-3"></i>
                                     <span class="fw-medium">{{$user->prenom}} {{$user->nom}}</span>
@@ -84,7 +84,7 @@
                                     <h5 class="mb-0">Nouvel utilisateur</h5>
                                 </div>
                                 <div class="card-body">
-                                <form action="{{ route('register_user') }}" method="POST">
+                                <form action="{{ route('register_user') }}" id="form_create_user" method="POST">
                                     @csrf
                                     <div class="mb-3">
                                         <label class="form-label" for="basic-icon-default-fullname">Prénom & Nom</label>
@@ -138,16 +138,20 @@
                                                 <span id="basic-icon-default-fullname2" class="input-group-text"
                                                 ><i class="bx bx-lock"></i
                                                 ></span>
-                                                <input type="password" name="password" required class="form-control" id="password" placeholder="mot de passe"  aria-describedby="basic-icon-default-fullname2" />
+                                                <input type="password" name="password" minlength="5" required class="form-control" id="password" placeholder="mot de passe"  aria-describedby="basic-icon-default-fullname2" />
                                             </div>
                                             <div class="col input-group input-group-merge ">
                                                 <span id="basic-icon-default-fullname2" class="input-group-text"
                                                 ><i class="bx bx-lock"></i
                                                 ></span>
-                                                <input type="password" required name="password_confirm" class="form-control" id="password_confirm" placeholder="confirmer le mot de passe"  aria-describedby="basic-icon-default-fullname2" />
+                                                <input type="password" required minlength="5" name="password_confirm" class="form-control" id="password_confirm" placeholder="confirmer le mot de passe"  aria-describedby="basic-icon-default-fullname2" />
                                             </div>
                                         </div>
                                         
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show"  role="alert" hidden id="alert_error_password">
+                                        <strong id="error_password"></strong> 
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Ajouter</button>
                                 </form>
@@ -170,6 +174,18 @@
                             bootstrapAlert.close();
                         }, 5000);
                     } 
+        
+                    $("#form_create_user").on('submit', function(even){
+                        even.preventDefault();
+                        if (document.getElementById("password").value != document.getElementById("password_confirm").value) {
+                            document.getElementById('error_password').innerText="Mot de passe et confirmation non identique!!!";
+                            document.getElementById('alert_error_password').hidden=false;
+                        }
+
+                        else{
+                            document.getElementById('form_create_user').submit();
+                        }
+                    })
         </script>
        
     @endsection

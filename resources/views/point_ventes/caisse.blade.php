@@ -46,7 +46,7 @@
                                                     <p class="card-text">Gérant</p>
                                                 </div>
                                                 <div class="col-7 text-right" style="text-align: right;">
-                                                    <p class="card-title" style="font-weight: bold;">{{$point_vente->gerant}}</p>
+                                                    <p class="card-title" style="font-weight: bold;">{{Auth::user()->prenom}} {{Auth::user()->nom}}</p>
                                                 </div>
                                             </div>
                                             @if($recap_etat_journalier['nombre_ticket'])

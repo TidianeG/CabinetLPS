@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+require 'C:\wamp64\www\CaisseManagement\vendor\autoload.php';
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use App\Models\Caisse;
 use App\Models\Client;
 use App\Models\Consultation;
@@ -15,6 +18,7 @@ use PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Ramsey\Uuid\Type\Integer;
 
 class TicketController extends Controller
@@ -104,7 +108,7 @@ class TicketController extends Controller
         $prix_consultation_ipm = 0;
         $taux_IPM = 0;
         
-        if ($client->ipm_id) {
+        if (isset($client->ipm_id)) {
             $tarif_consult_ipm = ConsultationIPM::where('consultation_id','=',$consultation->id)->first();
             //
             //dd($tarif_consult_ipm->prix_consultation_ipm);
@@ -144,6 +148,14 @@ class TicketController extends Controller
             'taux_IPM' => $taux_IPM,
         ];
         $pdf = PDF::loadView('point_ventes.magecompPDF', $data);
+
+        
+        // $connector = new WindowsPrintConnector("ESPON TM-T88V Receipt");
+
+        // $printer = new Printer($connector);
+        // $printer -> text("Hello World!\n");
+        // $printer -> cut();
+        // //$printer -> close();
         
         if ($pdf) {
             $pdf->download("ticket_caisse".$ticket->numero.".pdf");
@@ -153,7 +165,7 @@ class TicketController extends Controller
 
             $ticket->save();
 
-            return $pdf->stream($patch_url.'.pdf'); //redirect()->back()->with(['success' => "Ticket créé et imprimé avec succès"]); //$pdf->stream($patch_url.'.pdf');//
+            return view('point_ventes.result_create_ticket', compact('ticket')); //redirect()->back()->with(['success' => "Ticket créé et imprimé avec succès"]); //$pdf->stream($patch_url.'.pdf');//
         }
         // else {
         //     return redirect()->back()->with(['error' => "Ticket non imprimé"]);

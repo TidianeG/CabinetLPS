@@ -41,11 +41,16 @@ class PointVenteController extends Controller
             'gerant' => 'required|integer',
             'description' => 'required|string|max:255',
         ]);
+
+        $gerant_id = intval($validated['gerant']);
         $point_vente_exist = PointVente::where('nom_point_vente', $validated['nom_point_vente'])->first();
-        if ($point_vente_exist) {
+        $point_vente_user_exist = PointVente::where('user_id', $gerant_id)->first();
+        if (isset($point_vente_exist)) {
             return redirect()->back()->with(['error' => "Nom du point de vente existe déja !!!"]);
         }
-
+        elseif (isset($point_vente_user_exist)) {
+            return redirect()->back()->with(['error' => "L'utilisateur selectionné est dèja lié à un point de vente !!!"]);
+        }
         else {
             $point_vente = new PointVente();
             $statu_caisse = new StatutCaisse();
@@ -69,6 +74,27 @@ class PointVenteController extends Controller
             }
         }
         
+    }
+
+    public function updatePointVente(Request $request){
+        
+        $id_point_vente = intval($request->input('identifiant_point_vente'));
+        $nom_point_vente = $request->input('nom_point_vente_update');
+        $gerant_point_vente = intval($request->input('gerant_update'));
+        $description_point_vente = $request->input('description_update');
+
+        $user = User::find($gerant_point_vente);
+
+        $update_point_vente = PointVente::find($id_point_vente)
+                            ->update(['nom_point_vente'=>$nom_point_vente,'gerant'=>$user->prenom.' '.$user->nom, 'description'=>$description_point_vente, 'user_id'=>$gerant_point_vente]);
+        if (empty($update_point_vente)) {
+                
+            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        }
+        else {
+            
+            return redirect()->back()->with(['success' => "Point de Vente modifié avec succès"]);
+        }
     }
 
     public function myCaisse(){

@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class PointVente extends Model
 {
     use HasFactory;
+
+    
+    protected $fillable = [
+        'nom_point_vente',
+        'gerant',
+        'description',
+        'user_id',
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }

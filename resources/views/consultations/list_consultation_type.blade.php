@@ -44,7 +44,7 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                <a class="dropdown-item " href="#" onclick="updateConsultation('{{$consultation->id}}','{{$consultation->nom_consultation}}','{{$consultation->prix_consultation}}','{{$consultation->description}}')"
                                                 ><i class="bx bx-edit-alt me-1"></i> Edit</a
                                                 >
                                                 <a class="dropdown-item" href="javascript:void(0);"
@@ -198,7 +198,83 @@
             </div>
         </div>
         <!--/ modal add consultation -->
+
+        <!-- modal update consultation -->
+        <div class="modal fade" id="update_consultation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <nav class="navbar navbar-light ">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">
+                                <img src="{{asset('assets/img/favicon/logo_lps_text.png')}}" alt="" width="70%" height="70%" class="d-inline-block align-text-center ">
+                            </a>
+                        </div>
+                    </nav>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding-top:0px !important;">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="card mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Update consultation</h5>
+                                
+                                </div>
+                                <div class="card-body">
+                                <form method="POST" action="{{route('update_consultation')}}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Nom</label>
+                                            <div class="input-group input-group-merge">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                ><i class="fa-solid fa-stethoscope"></i></span>
+                                                <input type="hidden" name="identifiant_consultation" class="form-control" id="identifiant_consultation"  />
+                                                <input type="text" name="nom_type_consultation_update" class="form-control" id="nom_type_consultation_update" placeholder="Nom consultation"  aria-describedby="basic-icon-default-fullname2" />
+                                            </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Description</label>
+                                        
+                                            <div class="col input-group input-group-merge">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                ><i class="fa-solid fa-comment-medical"></i></span>
+                                                <input type="text" name="description_type_consultation_update" class="form-control" id="description_type_consultation_update" placeholder="Description"  aria-describedby="basic-icon-default-fullname2" />
+                                            </div>
+                                        
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-phone">Prix consultation</label>
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-phone2" class="input-group-text"
+                                            ><i class="fa-solid fa-hand-holding-dollar"></i></span>
+                                            <input type="number" id="prix_type_consultation_update" name="prix_type_consultation_update" class="form-control phone-mask"  aria-describedby="basic-icon-default-phone2" />
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+        <!--/ modal update consultation -->
         <script>
+
+            function updateConsultation(identifiant, nom, prix, description) {
+                $('#identifiant_consultation').val(identifiant);
+                $('#nom_type_consultation_update').val(nom);
+                $('#description_type_consultation_update').val(description);
+                $('#prix_type_consultation_update').val(prix);
+
+                $('#update_consultation').modal('show');
+
+            }
             const alerts = document.querySelectorAll('[class*="alert-"]')
                     for (const alert of alerts) {
                         setTimeout( function() {

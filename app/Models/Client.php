@@ -10,6 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nom_client',
+        'prenom_client',
+        'personne_confiance',
+        'telephone_client',
+        'adresse_client',
+    ];
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\IPM;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,12 +39,41 @@ class ClientController extends Controller
 
     public function getClient($slug){
         $client = Client::find($slug);
-        return view('clients.get_client',compact('client'));
+        $tickets = Ticket::where('client_id', $client->id)->get();
+        return view('clients.get_client',compact('client','tickets'));
+    }
+
+    public function updateClient(Request $request){
+        //dd($request);
+        $client_id = intval($request->input('identifiant_client'));
+        $nom_client = $request->input('nom_client');
+        $prenom_client = $request->input('prenom_client');
+        $personne_confiance = $request->input('personne_confiance');
+
+        $telephone_client = $request->input('telephone_client');
+        $adresse_client = $request->input('adresse_client');
+
+
+        $client = Client::find($client_id)
+                            ->update(['prenom_client'=>$prenom_client,'nom_client'=>$nom_client,'personne_confiance'=>$personne_confiance, 'telephone_client'=>$telephone_client, 'adresse_client'=>$adresse_client]);
+        if (empty($client)) {
+                
+            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        }
+        else {
+            
+            return redirect()->back()->with(['success' => "Utilisateur modifié!!!"]);
+        }
     }
     
     public function getUsers(){
         $users = User::where('profil','!=','admin')->get();
         return view('auth.list_users', compact('users'));
+    }
+
+    public function getUser($slug){
+        $user = User::find($slug);
+        return view('profile_user_cm', compact('user'));
     }
 
     
@@ -83,6 +113,48 @@ class ClientController extends Controller
        }
     }
 
+    public function updateUserCM(Request $request){
+        // dd($request);
+
+        $user_id = intval($request->input('identifiant_user'));
+        $nom_user = $request->input('nom_user');
+        $prenom_user = $request->input('prenom_user');
+        $username_user = $request->input('username_user');
+
+
+        $user = User::find($user_id)
+                            ->update(['prenom'=>$prenom_user,'nom'=>$nom_user,'username'=>$username_user]);
+        if (empty($user)) {
+                
+            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        }
+        else {
+            
+            return redirect()->back()->with(['success' => "Utilisateur modifié!!!"]);
+        }
+    }
+
+    public function updateUserAdmin(Request $request){
+        // dd($request);
+
+        $user_id = intval($request->input('identifiant_user'));
+        $nom_user = $request->input('nom_user');
+        $prenom_user = $request->input('prenom_user');
+        $username_user = $request->input('username_user');
+
+
+        $user = User::find($user_id)
+                            ->update(['prenom'=>$prenom_user,'nom'=>$nom_user,'username'=>$username_user]);
+        if (empty($user)) {
+                
+            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        }
+        else {
+            
+            return redirect()->back()->with(['success' => "Utilisateur modifié!!!"]);
+        }
+    }
+    
     public function register_client(Request $request):RedirectResponse
     {
         $validated =  $request->validate([

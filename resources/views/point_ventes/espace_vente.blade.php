@@ -110,7 +110,7 @@
                                                                 <span id="basic-icon-default-fullname2" class="input-group-text"
                                                                 ><i class="fa-solid fa-person"></i
                                                                 ></span>
-                                                                <input type="text" name="participant"  class="form-control recap-disable" id="participant" placeholder="Nom Participant" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
+                                                                <input type="text" name="participant"  class="form-control recap-disable" id="participant" placeholder="Nom Participant" />
                                                             </div>
                                                             <div class="col input-group input-group-merge mb-3">
                                                                 <span id="basic-icon-default-fullname2" class="input-group-text"
@@ -139,7 +139,7 @@
                                                             <tbody class="table-border-bottom-0">
                                                                 @foreach($clients as $client)
                                                                     <tr>
-                                                                        <td><input type="radio" name="client_exist" value="{{$client->id}}" required onclick="clientRechercheIPMExistant('{{$client->id}}')"></td>
+                                                                        <td><input type="radio" name="client_exist" value="{{$client->id}}" required  onclick="clientRechercheIPMExistant('{{$client->id}}')"></td>
                                                                         <td>{{$client->numero_client}}</td>
                                                                         <td>{{$client->prenom_client}} {{$client->nom_client}}</td>
                                                                         <td>{{$client->telephone_client}}</td>
@@ -174,13 +174,13 @@
                                                         <span id="basic-icon-default-fullname2" class="input-group-text"
                                                         ><i class="fa-solid fa-person"></i
                                                         ></span>
-                                                        <input type="text" name="adresse"  class="form-control recap-disable" id="adresse" placeholder="Personne de confiance" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
+                                                        <input type="text" name="adresse"  class="form-control recap-disable" id="adresse" placeholder="Adresse" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
                                                     </div>
                                                     <div class="col input-group input-group-merge ">
                                                         <span id="basic-icon-default-fullname2" class="input-group-text"
                                                         ><i class="fa-solid fa-location-dot"></i
                                                         ></span>
-                                                        <input type="text" name="personne_confiance"   class="form-control recap-disable" id="personne_confiance" placeholder="Adresse patient" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
+                                                        <input type="text" name="personne_confiance"   class="form-control recap-disable" id="personne_confiance" placeholder="Personne confiance" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -188,24 +188,21 @@
                                                         <span id="basic-icon-default-fullname2" class="input-group-text"
                                                         ><i class="fa-solid fa-phone"></i
                                                         ></span>
-                                                        <input type="text" name="telephone"  required class="form-control recap-disable" id="telephone" placeholder="77 XXX XX XX" aria-label="" aria-describedby="basic-icon-default-fullname2" />
+                                                        <input type="text" name="telephone"   class="form-control recap-disable" id="telephone" placeholder="77 XXX XX XX" aria-label="" aria-describedby="basic-icon-default-fullname2" />
                                                     </div>
                                                 </div>
                                             </div>
                                             
                                         </div>
                                     </div>
-                                        
-                                        
-                                        <button type="submit"  class="btn btn-primary" id="valider"><i class="fa-solid fa-circle-check fa-lg text-white me-3"></i>Valider</button>
+                                    
+                                        <button type="submit"  class="btn btn-primary"  id="valider"><i class="fa-solid fa-circle-check fa-lg text-white me-3"></i>Valider</button>
                                 </form>
                                 
                             </div>
                         </div>
                     </div>
                     <!-- Merged -->
-                    
-                    
                 
                 <div class="modal fade" id="cloture_caisse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
@@ -279,6 +276,7 @@
 
                         $("input[type=radio][name=client_exist]").prop('checked', false);
                         $("input[type=radio][name=client_exist]").prop('value', "");
+                        $("input[type=radio][name=client_exist]").prop('required', false);
                         document.getElementById('client_new_ip').hidden=false;
                         
                         
@@ -296,10 +294,10 @@
 
                         document.getElementById('telephone').required=false;
 
-                        document.getElementById('client_exist').required=true;
+                        $("input[type=radio][name=client_exist]").prop('required', false);
 
                         document.getElementById('client_exist').checked=false;
-                        document.getElementById('client_exist').value="";
+                        //document.getElementById('client_exist').value="";
                     }
                     
                 });
@@ -347,12 +345,7 @@
                 }
                 // document.getElementsByClassName('client_exist').addEventListener('click', function(){
                 //     if (document.getElementsByClassName('client_exist').checked) {
-                        
-                //     }    
-                //     //alert('response');    
-                        
-                // });
-
+            
                 // Selection d'un nouveau client
                     document.getElementById('nouveau_ticket').addEventListener('submit', function(e){
                         e.preventDefault();
@@ -404,7 +397,6 @@
                             // }    
                     });
 
-
                     document.getElementById('rejeter_ticket').addEventListener('click',function(e){
                         e.preventDefault();
                         document.getElementById('recapitulatif_ticket').hidden=true;
@@ -421,7 +413,6 @@
                         document.getElementById('type_ipm').disabled=false;
                         document.getElementById('participant').disabled=false;
                         document.getElementById('type_paiement').disabled=false;
-
                     });
 
                     document.getElementById('generer_ticket').addEventListener('click',function(){
@@ -454,6 +445,12 @@
                         }, 5000);
                     }
                     
+                    $('#myTable').DataTable( {
+                        //$('#myTable').DataTable();
+                        dom: "tip",
+                        pagingType: "simple",
+                        pageLength: 3
+                    });
         </script>
     <style>
         /*

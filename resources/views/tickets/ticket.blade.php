@@ -2,18 +2,22 @@
     @section('content')
                 <div class="card p-2">
                     <div class="d-flex justify-content-between">
-                        @if(Auth::user()->profil=='caissier')    
-                            <div class="m-2" >
-                                <a href="{{route('espace_caisse')}}" class="btn btn-primary"><i class="fa-solid fa-rotate-left fa-lg text-white me-3"></i>Quitter</a>
-                            </div>
-                        @endif
+                        <button type="button" class="btn btn-primary" onclick="window.history.back();" ><i class="fa-solid fa-rotate-left fa-lg text-white me-3"></i>Retour</button>
+                        
                         <div class="m-2" >
-                            <a href="#" class="btn btn-success"><i class="fa-solid fa-file-invoice fa-lg text-white me-3"></i>Générer une facture</a>
+                            <form action="{{route('generer_facture')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="identifiant_ticket" value="{{$ticket->id}}">
+                                <input type="hidden" name="numero_ticket" value="{{$ticket->numero}}">
+                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-invoice fa-lg text-white me-3"></i>Générer une facture</button>
+                            </form>
+                            
+                            
                         </div>
                     </div>
                     <h5 class="card-header">Détails du ticket</h5>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-7">
                             <div class="table-responsive text-nowrap">
                                 <table class="table table-hover" id="">
                                     <thead>
@@ -41,12 +45,12 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <iframe src="{{asset('storage\documents\Tickets\pdf\Ticket_caisse'.$ticket->numero.'.pdf')}}" frameborder="0" height="500" style="zoom: 110%;"></iframe>
-                        
+                        <div class="col-5">
+                            <iframe id="frame" src="{{asset('storage\documents\Tickets\pdf\Ticket_caisse'.$ticket->numero.'.pdf')}}" frameborder="0" width="300" height="550"></iframe>
                         </div>
                     </div>
                     
                     
                 </div>
+                
     @endsection

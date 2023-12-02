@@ -73,4 +73,23 @@ class ConsultationController extends Controller
             return response()->json(['status' => 'error']);
         }
     }
+
+    public function updateConsultation(Request $request){
+        
+        $id_consult = intval($request->input('identifiant_consultation'));
+        $nom_consult = $request->input('nom_type_consultation_update');
+        $prix_consult = $request->input('prix_type_consultation_update');
+        $description_consult = $request->input('description_type_consultation_update');
+
+        $update_consultation = Consultation::find($id_consult)
+                            ->update(['nom_consultation'=>$nom_consult,'prix_consultation'=>$prix_consult, 'description'=>$description_consult]);
+        if (empty($update_consultation)) {
+                
+            return redirect()->back()->with(['error' => "Erreur, vérifier les parametres"]);
+        }
+        else {
+            
+            return redirect()->back()->with(['success' => "Consultation modifiée avec succès"]);
+        }
+    }
 }

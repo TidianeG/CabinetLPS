@@ -48,7 +48,7 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);"
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="updatePointVente('{{$point_vente->id}}','{{$point_vente->nom_point_vente}}','{{$point_vente->user->id}}','{{$point_vente->description}}')"
                                             ><i class="bx bx-edit-alt me-1"></i> Edit</a
                                             >
                                             <a class="dropdown-item" href="javascript:void(0);"
@@ -64,13 +64,11 @@
                 </div>
                 </div>
                 <!--/ Hoverable Table rows -->
-
-
             </div>
             <!--/ Content -->
         </div>
         <!--/ Content -->
-        <!-- modal add client -->
+        <!-- modal add Point de vente -->
         <div class="modal fade" id="add_new_point_vente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -111,7 +109,10 @@
                                                 <select name="gerant" id="gerant" class="form-control" required>
                                                     <option value="">Selectionner un gérant</option>
                                                     @foreach($users as $user)
-                                                        <option value="{{$user->id}}">{{$user->prenom}} {{$user->nom}}</option>
+                                                        @if(!isset($user->point_vente))
+                                                            <option value="{{$user->id}}">{{$user->prenom}} {{$user->nom}}</option>
+                                                        @endif
+                                                        
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -136,9 +137,93 @@
                 </div>
             </div>
         </div>
-        <!--/ modal add client -->
+        <!--/ modal add Point de vente -->
+
+
+        <!-- modal update Point de vente -->
+        <div class="modal fade" id="update_point_vente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <nav class="navbar navbar-light ">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">
+                                <img src="{{asset('assets/img/favicon/logo_lps_text.png')}}" alt="" width="70%" height="70%" class="d-inline-block align-text-center ">
+                            </a>
+                        </div>
+                    </nav>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding-top:0px !important;">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="card mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Nouveau Point de vente</h5>
+                                </div>
+                                <div class="card-body">
+                                <form method="POST" action="{{route('update_point_de_vente')}}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Nom du point de vente</label>
+                                            <div class="input-group input-group-merge">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                ><i class="fa-solid fa-cash-register"></i></span>
+                                                <input type="hidden" name="identifiant_point_vente" required class="form-control" id="identifiant_point_vente" placeholder="Nom consultation"  aria-describedby="basic-icon-default-fullname2" />
+
+                                                <input type="text" name="nom_point_vente_update" required class="form-control" id="nom_point_vente_update" placeholder="Nom consultation"  aria-describedby="basic-icon-default-fullname2" />
+                                            </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Gérant</label>
+                                            <div class="col input-group input-group-merge">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"
+                                                ><i class="fa-solid fa-user"></i></span>
+                                                <select name="gerant_update" id="gerant_update" class="form-control" required>
+                                                    <option value="">Selectionner un gérant</option>
+                                                    @foreach($users as $user)
+                                                            <option value="{{$user->id}}">{{$user->prenom}} {{$user->nom}}</option>
+                                                        
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-phone">Description</label>
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-phone2" class="input-group-text"
+                                            ><i class="fa-solid fa-comment-medical"></i></span>
+                                            <input type="text" id="description_update" name="description_update" class="form-control phone-mask"  aria-describedby="basic-icon-default-phone2" />
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+        <!--/ modal update Point de vente -->
 
         <script>
+
+            function updatePointVente(identifiant, nom, gerant, description) {
+                $('#identifiant_point_vente').val(identifiant);
+                $('#nom_point_vente_update').val(nom);
+                $('#gerant_update').val(gerant).prop('selected', true);
+                //$('#gerant_update option[value=gerant]').prop('selected', true);
+                $('#description_update').val(description);
+
+                $('#update_point_vente').modal('show');
+
+            }
+
             const alerts = document.querySelectorAll('[class*="alert-"]')
                     for (const alert of alerts) {
                         setTimeout( function() {
